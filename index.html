@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chalk &amp; Cart — Voice Grocery Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Caveat:wght@600&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#16302A;
+    --bg-panel:#0E211C;
+    --ink:#F5F0E1;
+    --muted:#8FAFA1;
+    --accent:#E8A33D;
+    --accent-ink:#3A2405;
+    --accent2:#D1495B;
+    --paper:#FBF3DC;
+    --paper-ink:#2B2417;
+    --paper-line:#DDD0AC;
+    --card-border: rgba(245,240,225,0.14);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding:32px 20px 64px;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:4px;
+  }
+  .brand h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:34px;
+    margin:0;
+    letter-spacing:-0.5px;
+  }
+  .brand span.tag{
+    font-family:'Caveat',cursive;
+    font-size:22px;
+    color:var(--accent);
+    transform:rotate(-3deg);
+    display:inline-block;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:15px;
+    margin:0 0 28px;
+  }
+
+  .control-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .mic-btn{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--accent);
+    border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    position:relative;
+    transition:transform .15s ease;
+  }
+  .mic-btn:active{transform:scale(0.94);}
+  .mic-btn svg{width:26px;height:26px;fill:var(--accent-ink);}
+  .mic-btn.listening{
+    animation:pulse 1.2s infinite;
+    background:var(--accent2);
+  }
+  .mic-btn.listening svg{fill:#3A0A10;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(209,73,91,0.55);}
+    70%{box-shadow:0 0 0 18px rgba(209,73,91,0);}
+    100%{box-shadow:0 0 0 0 rgba(209,73,91,0);}
+  }
+  select, .text-fallback input{
+    background:rgba(245,240,225,0.06);
+    border:1px solid var(--card-border);
+    color:var(--ink);
+    border-radius:8px;
+    padding:9px 12px;
+    font-size:14px;
+    font-family:'Inter',sans-serif;
+  }
+  select{cursor:pointer;}
+  .text-fallback{
+    display:flex;
+    gap:8px;
+    flex:1;
+    min-width:220px;
+  }
+  .text-fallback input{flex:1;}
+  .text-fallback button{
+    background:transparent;
+    border:1px solid var(--card-border);
+    color:var(--ink);
+    border-radius:8px;
+    padding:0 16px;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .text-fallback button:hover{background:rgba(245,240,225,0.06);}
+
+  .transcript{
+    min-height:22px;
+    font-size:15px;
+    color:var(--muted);
+    margin:14px 0 26px;
+  }
+  .transcript b{color:var(--ink);font-weight:600;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:720px){
+    .grid{grid-template-columns:1fr;}
+  }
+
+  .stage{min-height:120px;}
+  .empty-stage{
+    border:1px dashed var(--card-border);
+    border-radius:14px;
+    padding:26px;
+    color:var(--muted);
+    font-size:14px;
+    text-align:center;
+  }
+
+  .sticker{
+    background:linear-gradient(180deg, rgba(245,240,225,0.05), rgba(245,240,225,0.02));
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:16px;
+    animation:appear .28s ease-out;
+  }
+  @keyframes appear{
+    from{opacity:0; transform:translateY(8px) scale(0.98);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+  .sticker.leaving{
+    animation:peel .38s ease-in forwards;
+  }
+  @keyframes peel{
+    to{opacity:0; transform:translate(40px,-18px) rotate(8deg) scale(0.85);}
+  }
+  .sticker-top{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .sticker-icon{
+    width:46px;height:46px;border-radius:50%;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;
+    flex-shrink:0;
+  }
+  .sticker-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    font-weight:700;
+    margin:0;
+    text-transform:capitalize;
+  }
+  .sticker-cat{
+    font-size:12px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+  .sticker-note{
+    font-family:'Caveat',cursive;
+    color:var(--accent);
+    font-size:16px;
+    margin-left:auto;
+    text-align:right;
+    max-width:180px;
+  }
+  .sticker-controls{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-top:18px;
+    flex-wrap:wrap;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .field label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+  .qty-stepper{
+    display:flex;align-items:center;gap:0;
+    border:1px solid var(--card-border);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .qty-stepper button{
+    background:rgba(245,240,225,0.06);
+    border:none;
+    color:var(--ink);
+    width:32px;height:34px;
+    font-size:16px;
+    cursor:pointer;
+  }
+  .qty-stepper button:hover{background:rgba(245,240,225,0.12);}
+  .qty-stepper span{
+    width:38px;text-align:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:15px;
+  }
+  .price-input{
+    background:rgba(245,240,225,0.06);
+    border:1px solid var(--card-border);
+    color:var(--ink);
+    border-radius:8px;
+    padding:7px 10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:15px;
+    width:76px;
+  }
+  .add-cart-btn{
+    margin-left:auto;
+    background:var(--accent);
+    color:var(--accent-ink);
+    border:none;
+    border-radius:8px;
+    padding:10px 20px;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .add-cart-btn:hover{filter:brightness(1.06);}
+  .subs-row{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .subs-row button{
+    background:none;border:none;
+    color:var(--accent);
+    text-decoration:underline;
+    cursor:pointer;
+    font-size:13px;
+    padding:0;
+  }
+
+  .picks{
+    margin-top:22px;
+  }
+  .picks h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    color:var(--muted);
+    margin:0 0 10px;
+  }
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{
+    background:rgba(245,240,225,0.05);
+    border:1px solid var(--card-border);
+    color:var(--ink);
+    border-radius:20px;
+    padding:7px 14px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .chip:hover{background:rgba(245,240,225,0.1);}
+
+  .toast{
+    position:fixed;
+    bottom:24px;left:50%;
+    transform:translateX(-50%);
+    background:var(--ink);
+    color:var(--bg-panel);
+    padding:10px 20px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:500;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(-4px);
+  }
+
+  /* Receipt / cart panel */
+  .receipt{
+    background:var(--paper);
+    color:var(--paper-ink);
+    border-radius:4px;
+    padding:26px 24px 20px;
+    position:relative;
+    box-shadow:0 12px 30px rgba(0,0,0,0.28);
+  }
+  .receipt::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;height:10px;
+    background-image: linear-gradient(135deg, var(--paper) 25%, transparent 25%), linear-gradient(225deg, var(--paper) 25%, transparent 25%);
+    background-size:16px 16px;
+    background-color:var(--bg);
+  }
+  .receipt h2{
+    font-family:'JetBrains Mono',monospace;
+    font-size:16px;
+    letter-spacing:2px;
+    text-align:center;
+    margin:6px 0 4px;
+    text-transform:uppercase;
+  }
+  .receipt .sub-r{
+    text-align:center;
+    font-size:11px;
+    color:#8a7d5e;
+    margin:0 0 16px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .receipt-line{
+    display:flex;
+    justify-content:space-between;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--paper-line);
+    gap:8px;
+  }
+  .receipt-line .rname{flex:1;}
+  .receipt-line button{
+    background:none;border:none;
+    color:var(--accent2);
+    cursor:pointer;
+    font-size:14px;
+    padding:0 0 0 8px;
+  }
+  .receipt-empty{
+    text-align:center;
+    font-size:13px;
+    color:#8a7d5e;
+    padding:20px 0;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .receipt-total{
+    display:flex;justify-content:space-between;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:600;
+    font-size:15px;
+    margin-top:14px;
+    padding-top:10px;
+    border-top:2px solid var(--paper-ink);
+  }
+  .clear-btn{
+    width:100%;
+    margin-top:16px;
+    background:transparent;
+    border:1px solid var(--paper-ink);
+    color:var(--paper-ink);
+    border-radius:6px;
+    padding:9px;
+    font-size:13px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  .clear-btn:hover{background:rgba(43,36,23,0.06);}
+
+  .search-results{
+    margin-top:10px;
+  }
+  .search-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+    padding:10px 0;
+    border-bottom:1px solid var(--card-border);
+  }
+  .search-row button{
+    background:var(--accent);
+    color:var(--accent-ink);
+    border:none;
+    border-radius:6px;
+    padding:6px 12px;
+    font-size:12px;
+    cursor:pointer;
+  }
+
+  .mode-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .mode-btn{
+    background:rgba(245,240,225,0.05);
+    border:1px solid var(--card-border);
+    color:var(--ink);
+    border-radius:20px;
+    padding:8px 16px;
+    font-size:13px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  .mode-btn.active{
+    background:var(--accent);
+    color:var(--accent-ink);
+    border-color:var(--accent);
+    font-weight:600;
+  }
+
+  .convo-panel{
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:24px;
+    background:rgba(245,240,225,0.03);
+  }
+  .convo-transcript{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:16px;
+    max-height:280px;
+    overflow-y:auto;
+  }
+  .bubble{
+    max-width:78%;
+    padding:9px 14px;
+    border-radius:14px;
+    font-size:14px;
+    line-height:1.45;
+  }
+  .bubble.bot{
+    align-self:flex-start;
+    background:rgba(245,240,225,0.08);
+    border-bottom-left-radius:4px;
+  }
+  .bubble.user{
+    align-self:flex-end;
+    background:var(--accent);
+    color:var(--accent-ink);
+    border-bottom-right-radius:4px;
+    font-weight:500;
+  }
+  .ingredient-checklist{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .ing-pill{
+    font-size:12px;
+    padding:6px 12px;
+    border-radius:16px;
+    border:1px solid var(--card-border);
+    color:var(--muted);
+    text-transform:capitalize;
+  }
+  .ing-pill.done{
+    background:var(--accent);
+    color:var(--accent-ink);
+    border-color:var(--accent);
+    text-decoration:line-through;
+    opacity:0.75;
+  }
+  .ing-pill.current{
+    border-color:var(--accent);
+    color:var(--ink);
+    font-weight:600;
+  }
+  .brand-picker{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+    gap:10px;
+    margin-top:14px;
+  }
+  .brand-card{
+    background:rgba(245,240,225,0.05);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:12px 14px;
+    cursor:pointer;
+    text-align:left;
+  }
+  .brand-card:hover{border-color:var(--accent);}
+  .brand-card .bname{
+    font-weight:600;
+    font-size:14px;
+    margin-bottom:4px;
+  }
+  .brand-card .bprice{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--accent);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <h1>Chalk &amp; Cart</h1>
+    <span class="tag">say it, see it, shop it</span>
+  </div>
+  <p class="sub">Tap the mic and say something like "add two apples" or "find toothpaste under 5 dollars."</p>
+
+  <div class="mode-row">
+    <button class="mode-btn active" id="freeModeBtn">Free voice mode</button>
+    <button class="mode-btn" id="guidedModeBtn">Cook with me</button>
+  </div>
+
+  <div class="convo-panel" id="convoPanel" style="display:none;">
+    <div class="convo-transcript" id="convoTranscript"></div>
+    <div class="ingredient-checklist" id="ingredientChecklist"></div>
+    <div class="brand-picker" id="brandPicker"></div>
+  </div>
+
+  <div class="control-row">
+    <button class="mic-btn" id="micBtn" aria-label="Start voice command">
+      <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>
+    </button>
+    <select id="langSelect">
+      <option value="en-US">English</option>
+      <option value="es-ES">Español</option>
+      <option value="hi-IN">हिन्दी</option>
+    </select>
+    <div class="text-fallback">
+      <input type="text" id="textInput" placeholder="or type a command, e.g. add 3 bananas" />
+      <button id="textSubmit">Send</button>
+    </div>
+  </div>
+
+  <p class="transcript" id="transcript">Ready when you are.</p>
+
+  <div class="grid">
+    <div>
+      <div class="stage" id="stage">
+        <div class="empty-stage">Recognized items will appear here as sticker cards.</div>
+      </div>
+
+      <div class="picks">
+        <h3>Today's picks</h3>
+        <div class="chip-row" id="picksRow"></div>
+      </div>
+    </div>
+
+    <div class="receipt">
+      <h2>Chalk &amp; Cart</h2>
+      <p class="sub-r">— your list —</p>
+      <div id="receiptLines"><div class="receipt-empty">Nothing on the list yet.</div></div>
+      <div class="receipt-total"><span>Total</span><span id="receiptTotal">$0.00</span></div>
+      <button class="clear-btn" id="clearBtn">Clear list</button>
+    </div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PRODUCTS = {
+  apple:{price:0.6,category:'produce',icon:'🍎'},
+  banana:{price:0.3,category:'produce',icon:'🍌'},
+  orange:{price:0.7,category:'produce',icon:'🍊'},
+  tomato:{price:0.5,category:'produce',icon:'🍅'},
+  potato:{price:0.4,category:'produce',icon:'🥔'},
+  onion:{price:0.35,category:'produce',icon:'🧅'},
+  milk:{price:3.2,category:'dairy',icon:'🥛'},
+  cheese:{price:4.5,category:'dairy',icon:'🧀'},
+  yogurt:{price:1.2,category:'dairy',icon:'🥣'},
+  egg:{price:0.25,category:'dairy',icon:'🥚'},
+  bread:{price:2.8,category:'bakery',icon:'🍞'},
+  rice:{price:3.0,category:'pantry',icon:'🍚'},
+  pasta:{price:1.9,category:'pantry',icon:'🍝'},
+  sugar:{price:2.2,category:'pantry',icon:'🧂'},
+  salt:{price:1.0,category:'pantry',icon:'🧂'},
+  coffee:{price:6.5,category:'pantry',icon:'☕'},
+  tea:{price:4.0,category:'pantry',icon:'🍵'},
+  water:{price:1.0,category:'beverages',icon:'💧'},
+  chicken:{price:5.5,category:'meat',icon:'🍗'},
+  toothpaste:{price:2.9,category:'household',icon:'🪥'},
+  chips:{price:2.5,category:'snacks',icon:'🥔'},
+  chocolate:{price:2.4,category:'snacks',icon:'🍫'},
+  butter:{price:3.1,category:'dairy',icon:'🧈'},
+  kesar:{price:5.5,category:'pantry',icon:'🌼'}
+};
+
+const SUBSTITUTES = {
+  milk:['almond milk','oat milk'],
+  sugar:['honey','stevia'],
+  rice:['quinoa'],
+  chips:['pretzels']
+};
+
+const SEASONAL = ['orange','tomato','bread','coffee'];
+
+// Items with more than one brand — triggers the brand-picker card in guided mode
+const BRANDS = {
+  bread:[
+    {brand:'Daily Fresh', price:2.6},
+    {brand:'Harvest Gold', price:2.9},
+    {brand:'Local Bakery', price:2.2}
+  ],
+  milk:[
+    {brand:'Farmhouse', price:3.0},
+    {brand:'Meadow Dairy', price:3.4}
+  ]
+};
+
+// Simple recipe → ingredient dataset. Ten dishes, kept intentionally small.
+const RECIPES = {
+  'choco milk':['milk','chocolate'],
+  'kesar milk':['milk','kesar','sugar'],
+  'fruit juice':['orange','apple','sugar'],
+  'choco sandwich':['bread','chocolate','butter'],
+  'bread butter':['bread','butter'],
+  'tea':['tea','milk','sugar'],
+  'coffee':['coffee','milk','sugar'],
+  'omelette':['egg','onion','tomato','salt'],
+  'veg pasta':['pasta','tomato','cheese'],
+  'fruit salad':['apple','banana','orange']
+};
+
+const NUM_WORDS = {one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,a:1,an:1,couple:2};
+
+let cart = [];
+let recognizedItem = null;
+
+const transcriptEl = document.getElementById('transcript');
+const stageEl = document.getElementById('stage');
+const micBtn = document.getElementById('micBtn');
+const langSelect = document.getElementById('langSelect');
+const toastEl = document.getElementById('toast');
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(()=>toastEl.classList.remove('show'), 1800);
+}
+
+function singular(word){
+  if(word.endsWith('ies')) return word.slice(0,-3)+'y';
+  if(word.endsWith('es')) return word.slice(0,-2);
+  if(word.endsWith('s') && !word.endsWith('ss')) return word.slice(0,-1);
+  return word;
+}
+
+function findProduct(text){
+  const words = text.split(/\s+/).map(singular);
+  for(const w of words){
+    if(PRODUCTS[w]) return w;
+  }
+  for(const key of Object.keys(PRODUCTS)){
+    if(text.includes(key)) return key;
+  }
+  return null;
+}
+
+function parseCommand(raw){
+  const text = raw.toLowerCase().trim();
+
+  let priceUnder = null;
+  const priceMatch = text.match(/under\s*\$?(\d+(\.\d+)?)/);
+  if(priceMatch) priceUnder = parseFloat(priceMatch[1]);
+
+  let action = 'add';
+  if(/\b(remove|delete|take off)\b/.test(text)) action = 'remove';
+  else if(/\b(find|search|look for|show me)\b/.test(text)) action = 'search';
+
+  let quantity = 1;
+  const numMatch = text.match(/\b(\d+)\b/);
+  if(numMatch){
+    quantity = parseInt(numMatch[1],10);
+  } else {
+    for(const word in NUM_WORDS){
+      if(new RegExp(`\\b${word}\\b`).test(text)){ quantity = NUM_WORDS[word]; break; }
+    }
+  }
+
+  const item = findProduct(text);
+  return {action, quantity, item, priceUnder, raw};
+}
+
+function renderSticker(itemKey, quantity){
+  const product = PRODUCTS[itemKey];
+  stageEl.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'sticker';
+  card.id = 'activeSticker';
+
+  let noteHtml = '';
+  if(SUBSTITUTES[itemKey]){
+    noteHtml = `<div class="subs-row">No ${itemKey}? Try
+      ${SUBSTITUTES[itemKey].map(s=>`<button onclick="quickAddText('${s}')">${s}</button>`).join(' or ')}.
+    </div>`;
+  }
+
+  card.innerHTML = `
+    <div class="sticker-top">
+      <div class="sticker-icon">${product.icon}</div>
+      <div>
+        <p class="sticker-name">${itemKey}</p>
+        <p class="sticker-cat">${product.category}</p>
+      </div>
+      <div class="sticker-note">${SEASONAL.includes(itemKey) ? "in season right now" : ""}</div>
+    </div>
+    <div class="sticker-controls">
+      <div class="field">
+        <label>Quantity</label>
+        <div class="qty-stepper">
+          <button onclick="stepQty(-1)">−</button>
+          <span id="qtyVal">${quantity}</span>
+          <button onclick="stepQty(1)">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Price / unit</label>
+        <input class="price-input" id="priceVal" type="number" step="0.01" value="${product.price.toFixed(2)}" />
+      </div>
+      <button class="add-cart-btn" onclick="confirmAdd('${itemKey}')">Add to cart</button>
+    </div>
+    ${noteHtml}
+  `;
+  stageEl.appendChild(card);
+  recognizedItem = {itemKey, quantity};
+}
+
+function stepQty(delta){
+  const span = document.getElementById('qtyVal');
+  let val = Math.max(1, parseInt(span.textContent,10) + delta);
+  span.textContent = val;
+  recognizedItem.quantity = val;
+}
+
+function confirmAdd(itemKey){
+  const price = parseFloat(document.getElementById('priceVal').value) || PRODUCTS[itemKey].price;
+  const qty = recognizedItem.quantity;
+  const existing = cart.find(c=>c.key===itemKey);
+  if(existing){ existing.qty += qty; }
+  else { cart.push({key:itemKey, qty, price, category:PRODUCTS[itemKey].category}); }
+
+  const sticker = document.getElementById('activeSticker');
+  sticker.classList.add('leaving');
+  showToast(`Added ${qty} × ${itemKey} to your list`);
+  setTimeout(()=>{
+    stageEl.innerHTML = '<div class="empty-stage">Recognized items will appear here as sticker cards.</div>';
+  }, 380);
+  renderCart();
+}
+
+function removeFromCart(key){
+  cart = cart.filter(c=>c.key!==key);
+  renderCart();
+}
+
+function renderCart(){
+  const linesEl = document.getElementById('receiptLines');
+  const totalEl = document.getElementById('receiptTotal');
+  if(cart.length===0){
+    linesEl.innerHTML = '<div class="receipt-empty">Nothing on the list yet.</div>';
+    totalEl.textContent = '$0.00';
+    return;
+  }
+  let total = 0;
+  linesEl.innerHTML = cart.map(c=>{
+    const lineTotal = c.qty*c.price;
+    total += lineTotal;
+    return `<div class="receipt-line">
+      <span class="rname">${c.qty}x ${c.key}</span>
+      <span>$${lineTotal.toFixed(2)}</span>
+      <button onclick="removeFromCart('${c.key}')" aria-label="Remove ${c.key}">×</button>
+    </div>`;
+  }).join('');
+  totalEl.textContent = '$'+total.toFixed(2);
+}
+
+function renderSearch(results, priceUnder){
+  stageEl.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'sticker search-results';
+  if(results.length===0){
+    wrap.innerHTML = `<p style="margin:0;color:var(--muted);font-size:14px;">No matches${priceUnder?` under $${priceUnder}`:''}.</p>`;
+  } else {
+    wrap.innerHTML = `<p class="sticker-name" style="margin-bottom:8px;">Search results</p>` +
+      results.map(([key,p])=>`
+        <div class="search-row">
+          <span>${p.icon} ${key} — $${p.price.toFixed(2)}</span>
+          <button onclick="quickAddText('${key}')">Add</button>
+        </div>`).join('');
+  }
+  stageEl.appendChild(wrap);
+}
+
+function quickAddText(itemText){
+  handleCommand('add '+itemText);
+}
+
+function handleCommand(raw){
+  const parsed = parseCommand(raw);
+  transcriptEl.innerHTML = `You said: <b>"${raw}"</b>`;
+
+  if(parsed.action==='search'){
+    let results = Object.entries(PRODUCTS).filter(([key])=>{
+      if(parsed.item) return key===parsed.item || key.includes(parsed.item);
+      return true;
+    });
+    if(parsed.priceUnder!==null) results = results.filter(([,p])=>p.price<=parsed.priceUnder);
+    renderSearch(results, parsed.priceUnder);
+    return;
+  }
+
+  if(parsed.action==='remove'){
+    if(parsed.item && cart.find(c=>c.key===parsed.item)){
+      removeFromCart(parsed.item);
+      showToast(`Removed ${parsed.item} from your list`);
+    } else {
+      showToast(parsed.item ? `${parsed.item} isn't in your cart` : "Couldn't tell what to remove");
+    }
+    return;
+  }
+
+  if(!parsed.item){
+    stageEl.innerHTML = `<div class="empty-stage">Didn't catch a known item in "${raw}". Try one of: ${Object.keys(PRODUCTS).slice(0,6).join(', ')}...</div>`;
+    return;
+  }
+
+  renderSticker(parsed.item, parsed.quantity);
+}
+
+// ---- Guided "cook with me" conversation engine ----
+let mode = 'free'; // 'free' | 'guided'
+let convo = {stage:null, remaining:[], done:[], recipeName:null, pendingItem:null};
+
+const convoTranscriptEl = document.getElementById('convoTranscript');
+const checklistEl = document.getElementById('ingredientChecklist');
+const brandPickerEl = document.getElementById('brandPicker');
+const convoPanelEl = document.getElementById('convoPanel');
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 1.0;
+  window.speechSynthesis.speak(utter);
+}
+
+function addBubble(text, from){
+  const div = document.createElement('div');
+  div.className = 'bubble '+from;
+  div.textContent = text;
+  convoTranscriptEl.appendChild(div);
+  convoTranscriptEl.scrollTop = convoTranscriptEl.scrollHeight;
+}
+
+function botSay(text){ addBubble(text,'bot'); speak(text); }
+function userSay(text){ addBubble(text,'user'); }
+
+function renderChecklist(){
+  const currentPill = convo.remaining.length ? `<span class="ing-pill current">${convo.remaining[0]}</span>` : '';
+  const upcomingPills = convo.remaining.slice(1).map(item=>`<span class="ing-pill">${item}</span>`).join('');
+  const donePills = convo.done.map(item=>`<span class="ing-pill done">${item}</span>`).join('');
+  checklistEl.innerHTML = donePills + currentPill + upcomingPills;
+}
+
+function startGuidedMode(){
+  mode = 'guided';
+  convoPanelEl.style.display = 'block';
+  convoTranscriptEl.innerHTML = '';
+  brandPickerEl.innerHTML = '';
+  convo = {stage:'awaiting_recipe', remaining:[], done:[], recipeName:null, pendingItem:null};
+  checklistEl.innerHTML = '';
+  botSay("What are you making today? Try a recipe like choco milk, kesar milk, or omelette.");
+}
+
+function exitGuidedMode(){
+  mode = 'free';
+  convoPanelEl.style.display = 'none';
+  window.speechSynthesis && window.speechSynthesis.cancel();
+}
+
+function findRecipe(text){
+  for(const key of Object.keys(RECIPES)){
+    if(text.includes(key)) return key;
+  }
+  return null;
+}
+
+function promptNextIngredient(){
+  renderChecklist();
+  if(convo.remaining.length===0){
+    botSay(`That's everything for ${convo.recipeName}. Say checkout when you're ready, or name another recipe.`);
+    convo.stage = 'done';
+    return;
+  }
+  botSay(`Please say: ${convo.remaining[0]}.`);
+  convo.stage = 'collecting';
+}
+
+function addIngredientToCart(itemKey, price){
+  const existing = cart.find(c=>c.key===itemKey);
+  if(existing){ existing.qty += 1; }
+  else { cart.push({key:itemKey, qty:1, price:price, category:PRODUCTS[itemKey].category}); }
+  renderCart();
+}
+
+function showBrandPicker(itemKey){
+  brandPickerEl.innerHTML = BRANDS[itemKey].map(b => `
+    <div class="brand-card" onclick="pickBrand('${itemKey}','${b.brand}')">
+      <div class="bname">${b.brand}</div>
+      <div class="bprice">$${b.price.toFixed(2)}</div>
+    </div>`).join('');
+}
+
+function pickBrand(itemKey, brandName){
+  const b = BRANDS[itemKey].find(x=>x.brand===brandName);
+  addIngredientToCart(itemKey, b.price);
+  userSay(brandName);
+  botSay(`Added ${brandName} ${itemKey}.`);
+  brandPickerEl.innerHTML = '';
+  convo.remaining = convo.remaining.filter(x=>x!==itemKey);
+  convo.done.push(itemKey);
+  promptNextIngredient();
+}
+
+function handleGuidedInput(raw){
+  const text = raw.toLowerCase().trim();
+  userSay(raw);
+
+  if(convo.stage==='awaiting_recipe'){
+    const key = findRecipe(text);
+    if(!key){
+      botSay('I don\'t know that one yet. Try: '+Object.keys(RECIPES).slice(0,5).join(', ')+'...');
+      return;
+    }
+    convo.recipeName = key;
+    convo.remaining = [...RECIPES[key]];
+    convo.done = [];
+    botSay(`Oh hey, ${key}! You'll need ${convo.remaining.join(', ')}. Let's add them one by one.`);
+    promptNextIngredient();
+    return;
+  }
+
+  if(convo.stage==='collecting'){
+    const expected = convo.remaining[0];
+    const spokenKey = findProduct(text);
+    const itemKey = (spokenKey && convo.remaining.includes(spokenKey)) ? spokenKey : (text.includes(expected) ? expected : null);
+
+    if(!itemKey){
+      botSay(`That didn't match ${expected}. Please say: ${expected}.`);
+      return;
+    }
+    if(BRANDS[itemKey]){
+      botSay(`We have a few options for ${itemKey} — pick one, or say the brand name.`);
+      showBrandPicker(itemKey);
+      convo.stage = 'choosing_brand';
+      convo.pendingItem = itemKey;
+      return;
+    }
+    addIngredientToCart(itemKey, PRODUCTS[itemKey].price);
+    botSay(`Added ${itemKey}.`);
+    convo.remaining = convo.remaining.filter(x=>x!==itemKey);
+    convo.done.push(itemKey);
+    promptNextIngredient();
+    return;
+  }
+
+  if(convo.stage==='choosing_brand'){
+    const itemKey = convo.pendingItem;
+    const match = BRANDS[itemKey].find(b=>text.includes(b.brand.toLowerCase()));
+    if(!match){
+      botSay(`Didn't catch that. Options are: ${BRANDS[itemKey].map(b=>b.brand).join(', ')}.`);
+      return;
+    }
+    pickBrand(itemKey, match.brand);
+    return;
+  }
+
+  if(convo.stage==='done'){
+    if(/checkout/.test(text)){
+      botSay(`All set! Your list has ${cart.length} item${cart.length===1?'':'s'}. Head to the cart to review and check out.`);
+      return;
+    }
+    const key = findRecipe(text);
+    if(key){
+      convo.recipeName = key;
+      convo.remaining = [...RECIPES[key]];
+      convo.done = [];
+      botSay(`Oh hey, ${key}! You'll need ${convo.remaining.join(', ')}.`);
+      promptNextIngredient();
+    } else {
+      botSay('Say checkout to finish, or name another recipe.');
+    }
+  }
+}
+
+function handleInput(raw){
+  if(mode==='guided') handleGuidedInput(raw);
+  else handleCommand(raw);
+}
+
+document.getElementById('guidedModeBtn').onclick = () => {
+  document.getElementById('guidedModeBtn').classList.add('active');
+  document.getElementById('freeModeBtn').classList.remove('active');
+  startGuidedMode();
+};
+document.getElementById('freeModeBtn').onclick = () => {
+  document.getElementById('freeModeBtn').classList.add('active');
+  document.getElementById('guidedModeBtn').classList.remove('active');
+  exitGuidedMode();
+};
+
+document.getElementById('textSubmit').onclick = () => {
+  const input = document.getElementById('textInput');
+  if(input.value.trim()){
+    handleInput(input.value.trim());
+    input.value = '';
+  }
+};
+document.getElementById('textInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter') document.getElementById('textSubmit').click();
+});
+document.getElementById('clearBtn').onclick = () => {
+  cart = [];
+  renderCart();
+  showToast('List cleared');
+};
+
+document.getElementById('picksRow').innerHTML = SEASONAL.map(key =>
+  `<div class="chip" onclick="quickAddText('${key}')">${PRODUCTS[key].icon} ${key}</div>`
+).join('');
+
+renderCart();
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let listening = false;
+
+if(SpeechRecognition){
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onstart = () => {
+    listening = true;
+    micBtn.classList.add('listening');
+    transcriptEl.textContent = 'Listening...';
+  };
+  recognition.onend = () => {
+    listening = false;
+    micBtn.classList.remove('listening');
+  };
+  recognition.onerror = (e) => {
+    listening = false;
+    micBtn.classList.remove('listening');
+    transcriptEl.textContent = `Mic error (${e.error}). Try typing your command instead.`;
+  };
+  recognition.onresult = (event) => {
+    const said = event.results[0][0].transcript;
+    handleInput(said);
+  };
+
+  micBtn.onclick = () => {
+    if(listening){ recognition.stop(); return; }
+    recognition.lang = langSelect.value;
+    try{ recognition.start(); }
+    catch(err){ transcriptEl.textContent = 'Could not start the mic. Try typing instead.'; }
+  };
+} else {
+  micBtn.onclick = () => {
+    transcriptEl.textContent = 'Voice recognition is not supported in this browser. Try Chrome, or type a command below.';
+  };
+}
+</script>
+</body>
+</html>
