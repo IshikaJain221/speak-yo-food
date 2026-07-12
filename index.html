@@ -30,7 +30,7 @@
     min-height:100vh;
   }
   .wrap{
-    max-width:1040px;
+    max-width:1080px;
     margin:0 auto;
     padding:32px 20px 64px;
   }
@@ -57,361 +57,10 @@
   .sub{
     color:var(--muted);
     font-size:15px;
-    margin:0 0 28px;
+    margin:0 0 22px;
   }
 
-  .control-row{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    flex-wrap:wrap;
-    margin-bottom:10px;
-  }
-  .mic-btn{
-    width:64px;height:64px;border-radius:50%;
-    background:var(--accent);
-    border:none;
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
-    flex-shrink:0;
-    position:relative;
-    transition:transform .15s ease;
-  }
-  .mic-btn:active{transform:scale(0.94);}
-  .mic-btn svg{width:26px;height:26px;fill:var(--accent-ink);}
-  .mic-btn.listening{
-    animation:pulse 1.2s infinite;
-    background:var(--accent2);
-  }
-  .mic-btn.listening svg{fill:#3A0A10;}
-  @keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(209,73,91,0.55);}
-    70%{box-shadow:0 0 0 18px rgba(209,73,91,0);}
-    100%{box-shadow:0 0 0 0 rgba(209,73,91,0);}
-  }
-  select, .text-fallback input{
-    background:rgba(245,240,225,0.06);
-    border:1px solid var(--card-border);
-    color:var(--ink);
-    border-radius:8px;
-    padding:9px 12px;
-    font-size:14px;
-    font-family:'Inter',sans-serif;
-  }
-  select{cursor:pointer;}
-  .text-fallback{
-    display:flex;
-    gap:8px;
-    flex:1;
-    min-width:220px;
-  }
-  .text-fallback input{flex:1;}
-  .text-fallback button{
-    background:transparent;
-    border:1px solid var(--card-border);
-    color:var(--ink);
-    border-radius:8px;
-    padding:0 16px;
-    font-size:14px;
-    cursor:pointer;
-  }
-  .text-fallback button:hover{background:rgba(245,240,225,0.06);}
-
-  .transcript{
-    min-height:22px;
-    font-size:15px;
-    color:var(--muted);
-    margin:14px 0 26px;
-  }
-  .transcript b{color:var(--ink);font-weight:600;}
-
-  .grid{
-    display:grid;
-    grid-template-columns:1.15fr 0.85fr;
-    gap:28px;
-    align-items:start;
-  }
-  @media (max-width:720px){
-    .grid{grid-template-columns:1fr;}
-  }
-
-  .stage{min-height:120px;}
-  .empty-stage{
-    border:1px dashed var(--card-border);
-    border-radius:14px;
-    padding:26px;
-    color:var(--muted);
-    font-size:14px;
-    text-align:center;
-  }
-
-  .sticker{
-    background:linear-gradient(180deg, rgba(245,240,225,0.05), rgba(245,240,225,0.02));
-    border:1px solid var(--card-border);
-    border-radius:16px;
-    padding:20px 22px;
-    margin-bottom:16px;
-    animation:appear .28s ease-out;
-  }
-  @keyframes appear{
-    from{opacity:0; transform:translateY(8px) scale(0.98);}
-    to{opacity:1; transform:translateY(0) scale(1);}
-  }
-  .sticker.leaving{
-    animation:peel .38s ease-in forwards;
-  }
-  @keyframes peel{
-    to{opacity:0; transform:translate(40px,-18px) rotate(8deg) scale(0.85);}
-  }
-  .sticker-top{
-    display:flex;
-    align-items:center;
-    gap:14px;
-  }
-  .sticker-icon{
-    width:46px;height:46px;border-radius:50%;
-    background:var(--accent);
-    display:flex;align-items:center;justify-content:center;
-    font-size:22px;
-    flex-shrink:0;
-  }
-  .sticker-name{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:19px;
-    font-weight:700;
-    margin:0;
-    text-transform:capitalize;
-  }
-  .sticker-cat{
-    font-size:12px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-  }
-  .sticker-note{
-    font-family:'Caveat',cursive;
-    color:var(--accent);
-    font-size:16px;
-    margin-left:auto;
-    text-align:right;
-    max-width:180px;
-  }
-  .sticker-controls{
-    display:flex;
-    align-items:center;
-    gap:18px;
-    margin-top:18px;
-    flex-wrap:wrap;
-  }
-  .field{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-  }
-  .field label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
-  .qty-stepper{
-    display:flex;align-items:center;gap:0;
-    border:1px solid var(--card-border);
-    border-radius:8px;
-    overflow:hidden;
-  }
-  .qty-stepper button{
-    background:rgba(245,240,225,0.06);
-    border:none;
-    color:var(--ink);
-    width:32px;height:34px;
-    font-size:16px;
-    cursor:pointer;
-  }
-  .qty-stepper button:hover{background:rgba(245,240,225,0.12);}
-  .qty-stepper span{
-    width:38px;text-align:center;
-    font-family:'JetBrains Mono',monospace;
-    font-size:15px;
-  }
-  .price-input{
-    background:rgba(245,240,225,0.06);
-    border:1px solid var(--card-border);
-    color:var(--ink);
-    border-radius:8px;
-    padding:7px 10px;
-    font-family:'JetBrains Mono',monospace;
-    font-size:15px;
-    width:76px;
-  }
-  .add-cart-btn{
-    margin-left:auto;
-    background:var(--accent);
-    color:var(--accent-ink);
-    border:none;
-    border-radius:8px;
-    padding:10px 20px;
-    font-weight:600;
-    font-size:14px;
-    cursor:pointer;
-  }
-  .add-cart-btn:hover{filter:brightness(1.06);}
-  .subs-row{
-    margin-top:14px;
-    font-size:13px;
-    color:var(--muted);
-  }
-  .subs-row button{
-    background:none;border:none;
-    color:var(--accent);
-    text-decoration:underline;
-    cursor:pointer;
-    font-size:13px;
-    padding:0;
-  }
-
-  .picks{
-    margin-top:22px;
-  }
-  .picks h3{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:14px;
-    text-transform:uppercase;
-    letter-spacing:0.6px;
-    color:var(--muted);
-    margin:0 0 10px;
-  }
-  .chip-row{display:flex;gap:8px;flex-wrap:wrap;}
-  .chip{
-    background:rgba(245,240,225,0.05);
-    border:1px solid var(--card-border);
-    color:var(--ink);
-    border-radius:20px;
-    padding:7px 14px;
-    font-size:13px;
-    cursor:pointer;
-  }
-  .chip:hover{background:rgba(245,240,225,0.1);}
-
-  .toast{
-    position:fixed;
-    bottom:24px;left:50%;
-    transform:translateX(-50%);
-    background:var(--ink);
-    color:var(--bg-panel);
-    padding:10px 20px;
-    border-radius:8px;
-    font-size:14px;
-    font-weight:500;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .25s ease, transform .25s ease;
-  }
-  .toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(-4px);
-  }
-
-  /* Receipt / cart panel */
-  .receipt{
-    background:var(--paper);
-    color:var(--paper-ink);
-    border-radius:4px;
-    padding:26px 24px 20px;
-    position:relative;
-    box-shadow:0 12px 30px rgba(0,0,0,0.28);
-  }
-  .receipt::before{
-    content:"";
-    position:absolute;
-    top:0;left:0;right:0;height:10px;
-    background-image: linear-gradient(135deg, var(--paper) 25%, transparent 25%), linear-gradient(225deg, var(--paper) 25%, transparent 25%);
-    background-size:16px 16px;
-    background-color:var(--bg);
-  }
-  .receipt h2{
-    font-family:'JetBrains Mono',monospace;
-    font-size:16px;
-    letter-spacing:2px;
-    text-align:center;
-    margin:6px 0 4px;
-    text-transform:uppercase;
-  }
-  .receipt .sub-r{
-    text-align:center;
-    font-size:11px;
-    color:#8a7d5e;
-    margin:0 0 16px;
-    font-family:'JetBrains Mono',monospace;
-  }
-  .receipt-line{
-    display:flex;
-    justify-content:space-between;
-    font-family:'JetBrains Mono',monospace;
-    font-size:13px;
-    padding:6px 0;
-    border-bottom:1px dashed var(--paper-line);
-    gap:8px;
-  }
-  .receipt-line .rname{flex:1;}
-  .receipt-line button{
-    background:none;border:none;
-    color:var(--accent2);
-    cursor:pointer;
-    font-size:14px;
-    padding:0 0 0 8px;
-  }
-  .receipt-empty{
-    text-align:center;
-    font-size:13px;
-    color:#8a7d5e;
-    padding:20px 0;
-    font-family:'JetBrains Mono',monospace;
-  }
-  .receipt-total{
-    display:flex;justify-content:space-between;
-    font-family:'JetBrains Mono',monospace;
-    font-weight:600;
-    font-size:15px;
-    margin-top:14px;
-    padding-top:10px;
-    border-top:2px solid var(--paper-ink);
-  }
-  .clear-btn{
-    width:100%;
-    margin-top:16px;
-    background:transparent;
-    border:1px solid var(--paper-ink);
-    color:var(--paper-ink);
-    border-radius:6px;
-    padding:9px;
-    font-size:13px;
-    cursor:pointer;
-    font-family:'Inter',sans-serif;
-  }
-  .clear-btn:hover{background:rgba(43,36,23,0.06);}
-
-  .search-results{
-    margin-top:10px;
-  }
-  .search-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:14px;
-    padding:10px 0;
-    border-bottom:1px solid var(--card-border);
-  }
-  .search-row button{
-    background:var(--accent);
-    color:var(--accent-ink);
-    border:none;
-    border-radius:6px;
-    padding:6px 12px;
-    font-size:12px;
-    cursor:pointer;
-  }
-
-  .mode-row{
-    display:flex;
-    gap:10px;
-    margin-bottom:18px;
-  }
+  .mode-row{ display:flex; gap:10px; margin-bottom:18px; }
   .mode-btn{
     background:rgba(245,240,225,0.05);
     border:1px solid var(--card-border);
@@ -437,83 +86,179 @@
     background:rgba(245,240,225,0.03);
   }
   .convo-transcript{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-bottom:16px;
-    max-height:280px;
-    overflow-y:auto;
+    display:flex; flex-direction:column; gap:10px;
+    margin-bottom:16px; max-height:280px; overflow-y:auto;
   }
-  .bubble{
-    max-width:78%;
-    padding:9px 14px;
-    border-radius:14px;
-    font-size:14px;
-    line-height:1.45;
+  .bubble{ max-width:78%; padding:9px 14px; border-radius:14px; font-size:14px; line-height:1.45; }
+  .bubble.bot{ align-self:flex-start; background:rgba(245,240,225,0.08); border-bottom-left-radius:4px; }
+  .bubble.user{ align-self:flex-end; background:var(--accent); color:var(--accent-ink); border-bottom-right-radius:4px; font-weight:500; }
+  .ingredient-checklist{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+  .ing-pill{ font-size:12px; padding:6px 12px; border-radius:16px; border:1px solid var(--card-border); color:var(--muted); text-transform:capitalize; }
+  .ing-pill.done{ background:var(--accent); color:var(--accent-ink); border-color:var(--accent); text-decoration:line-through; opacity:0.75; }
+  .ing-pill.current{ border-color:var(--accent); color:var(--ink); font-weight:600; }
+
+  .control-row{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:10px; }
+  .mic-btn{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--accent); border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer; flex-shrink:0; transition:transform .15s ease;
   }
-  .bubble.bot{
-    align-self:flex-start;
-    background:rgba(245,240,225,0.08);
-    border-bottom-left-radius:4px;
+  .mic-btn:active{transform:scale(0.94);}
+  .mic-btn svg{width:26px;height:26px;fill:var(--accent-ink);}
+  .mic-btn.listening{ animation:pulse 1.2s infinite; background:var(--accent2); }
+  .mic-btn.listening svg{fill:#3A0A10;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(209,73,91,0.55);}
+    70%{box-shadow:0 0 0 18px rgba(209,73,91,0);}
+    100%{box-shadow:0 0 0 0 rgba(209,73,91,0);}
   }
-  .bubble.user{
-    align-self:flex-end;
-    background:var(--accent);
-    color:var(--accent-ink);
-    border-bottom-right-radius:4px;
-    font-weight:500;
-  }
-  .ingredient-checklist{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin-bottom:6px;
-  }
-  .ing-pill{
-    font-size:12px;
-    padding:6px 12px;
-    border-radius:16px;
+  select, .text-fallback input{
+    background:rgba(245,240,225,0.06);
     border:1px solid var(--card-border);
-    color:var(--muted);
-    text-transform:capitalize;
+    color:var(--ink); border-radius:8px; padding:9px 12px;
+    font-size:14px; font-family:'Inter',sans-serif;
   }
-  .ing-pill.done{
-    background:var(--accent);
-    color:var(--accent-ink);
-    border-color:var(--accent);
-    text-decoration:line-through;
-    opacity:0.75;
+  select{cursor:pointer;}
+  .text-fallback{ display:flex; gap:8px; flex:1; min-width:220px; }
+  .text-fallback input{flex:1;}
+  .text-fallback button{
+    background:transparent; border:1px solid var(--card-border); color:var(--ink);
+    border-radius:8px; padding:0 16px; font-size:14px; cursor:pointer;
   }
-  .ing-pill.current{
-    border-color:var(--accent);
-    color:var(--ink);
-    font-weight:600;
-  }
-  .brand-picker{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
-    gap:10px;
-    margin-top:14px;
-  }
-  .brand-card{
+  .text-fallback button:hover{background:rgba(245,240,225,0.06);}
+
+  .transcript{ min-height:22px; font-size:15px; color:var(--muted); margin:14px 0 22px; }
+  .transcript b{color:var(--ink);font-weight:600;}
+
+  /* Category browser */
+  .cat-tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .cat-tab{
     background:rgba(245,240,225,0.05);
     border:1px solid var(--card-border);
-    border-radius:10px;
-    padding:12px 14px;
-    cursor:pointer;
-    text-align:left;
-  }
-  .brand-card:hover{border-color:var(--accent);}
-  .brand-card .bname{
-    font-weight:600;
-    font-size:14px;
-    margin-bottom:4px;
-  }
-  .brand-card .bprice{
-    font-family:'JetBrains Mono',monospace;
+    color:var(--muted);
+    border-radius:18px;
+    padding:7px 14px;
     font-size:13px;
-    color:var(--accent);
+    cursor:pointer;
   }
+  .cat-tab.active{ background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:600; }
+  .browse-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(120px,1fr));
+    gap:10px;
+    margin-bottom:24px;
+  }
+  .browse-item{
+    background:rgba(245,240,225,0.04);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    padding:12px 10px;
+    text-align:center;
+    cursor:pointer;
+  }
+  .browse-item:hover{border-color:var(--accent);}
+  .browse-item .bi-icon{font-size:24px;margin-bottom:6px;}
+  .browse-item .bi-name{font-size:12px;text-transform:capitalize;font-weight:600;}
+  .browse-item .bi-price{font-size:11px;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+  .browse-item .bi-rating{font-size:10px;color:var(--muted);margin-top:2px;}
+
+  .grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:28px; align-items:start; }
+  @media (max-width:720px){ .grid{grid-template-columns:1fr;} }
+
+  .stage{min-height:120px;}
+  .empty-stage{
+    border:1px dashed var(--card-border); border-radius:14px;
+    padding:26px; color:var(--muted); font-size:14px; text-align:center;
+  }
+
+  .sticker{
+    background:linear-gradient(180deg, rgba(245,240,225,0.05), rgba(245,240,225,0.02));
+    border:1px solid var(--card-border);
+    border-radius:16px; padding:20px 22px; margin-bottom:16px;
+    animation:appear .28s ease-out;
+  }
+  @keyframes appear{ from{opacity:0; transform:translateY(8px) scale(0.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+  .sticker.leaving{ animation:peel .38s ease-in forwards; }
+  @keyframes peel{ to{opacity:0; transform:translate(40px,-18px) rotate(8deg) scale(0.85);} }
+  .sticker-top{ display:flex; align-items:center; gap:14px; }
+  .sticker-icon{
+    width:46px;height:46px;border-radius:50%; background:var(--accent);
+    display:flex;align-items:center;justify-content:center; font-size:22px; flex-shrink:0;
+  }
+  .sticker-name{ font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:700; margin:0; text-transform:capitalize; }
+  .sticker-cat{ font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .sticker-note{ font-family:'Caveat',cursive; color:var(--accent); font-size:16px; margin-left:auto; text-align:right; max-width:180px; }
+
+  .brand-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+  .brand-pill{
+    border:1.5px solid var(--card-border);
+    border-radius:10px;
+    padding:9px 13px;
+    cursor:pointer;
+    display:flex; flex-direction:column; gap:3px;
+    min-width:120px;
+  }
+  .brand-pill.selected{ border-color:var(--accent); background:rgba(232,163,61,0.1); }
+  .bp-name{ font-size:13px; font-weight:600; }
+  .bp-rating{ font-size:11px; color:var(--muted); }
+  .bp-rating small{ color:var(--muted); }
+  .bp-price{ font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--accent); }
+
+  .sticker-controls{ display:flex; align-items:center; gap:18px; margin-top:16px; flex-wrap:wrap; }
+  .field{ display:flex; flex-direction:column; gap:4px; }
+  .field label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .qty-stepper{ display:flex;align-items:center;gap:0; border:1px solid var(--card-border); border-radius:8px; overflow:hidden; }
+  .qty-stepper button{ background:rgba(245,240,225,0.06); border:none; color:var(--ink); width:32px;height:34px; font-size:16px; cursor:pointer; }
+  .qty-stepper button:hover{background:rgba(245,240,225,0.12);}
+  .qty-stepper span{ width:38px;text-align:center; font-family:'JetBrains Mono',monospace; font-size:15px; }
+  .add-cart-btn{
+    margin-left:auto; background:var(--accent); color:var(--accent-ink);
+    border:none; border-radius:8px; padding:10px 20px; font-weight:600; font-size:14px; cursor:pointer;
+  }
+  .add-cart-btn:hover{filter:brightness(1.06);}
+  .subs-row{ margin-top:14px; font-size:13px; color:var(--muted); }
+  .subs-row button{ background:none;border:none; color:var(--accent); text-decoration:underline; cursor:pointer; font-size:13px; padding:0; }
+
+  .picks{ margin-top:22px; }
+  .picks h3{ font-family:'Space Grotesk',sans-serif; font-size:14px; text-transform:uppercase; letter-spacing:0.6px; color:var(--muted); margin:0 0 10px; }
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{ background:rgba(245,240,225,0.05); border:1px solid var(--card-border); color:var(--ink); border-radius:20px; padding:7px 14px; font-size:13px; cursor:pointer; }
+  .chip:hover{background:rgba(245,240,225,0.1);}
+
+  .toast{
+    position:fixed; bottom:24px;left:50%; transform:translateX(-50%);
+    background:var(--ink); color:var(--bg-panel); padding:10px 20px; border-radius:8px;
+    font-size:14px; font-weight:500; opacity:0; pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(-4px); }
+
+  .receipt{
+    background:var(--paper); color:var(--paper-ink); border-radius:4px;
+    padding:26px 24px 20px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.28);
+  }
+  .receipt::before{
+    content:""; position:absolute; top:0;left:0;right:0;height:10px;
+    background-image: linear-gradient(135deg, var(--paper) 25%, transparent 25%), linear-gradient(225deg, var(--paper) 25%, transparent 25%);
+    background-size:16px 16px; background-color:var(--bg);
+  }
+  .receipt h2{ font-family:'JetBrains Mono',monospace; font-size:16px; letter-spacing:2px; text-align:center; margin:6px 0 4px; text-transform:uppercase; }
+  .receipt .sub-r{ text-align:center; font-size:11px; color:#8a7d5e; margin:0 0 16px; font-family:'JetBrains Mono',monospace; }
+  .receipt-line{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:12.5px; padding:6px 0; border-bottom:1px dashed var(--paper-line); gap:8px; }
+  .receipt-line .rname{flex:1;}
+  .receipt-line button{ background:none;border:none; color:var(--accent2); cursor:pointer; font-size:14px; padding:0 0 0 8px; }
+  .receipt-empty{ text-align:center; font-size:13px; color:#8a7d5e; padding:20px 0; font-family:'JetBrains Mono',monospace; }
+  .receipt-total{ display:flex;justify-content:space-between; font-family:'JetBrains Mono',monospace; font-weight:600; font-size:15px; margin-top:14px; padding-top:10px; border-top:2px solid var(--paper-ink); }
+  .clear-btn{
+    width:100%; margin-top:16px; background:transparent; border:1px solid var(--paper-ink); color:var(--paper-ink);
+    border-radius:6px; padding:9px; font-size:13px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .clear-btn:hover{background:rgba(43,36,23,0.06);}
+
+  .search-results{ margin-top:10px; }
+  .search-row{ display:flex; justify-content:space-between; align-items:center; font-size:14px; padding:10px 0; border-bottom:1px solid var(--card-border); }
+  .search-row button{ background:var(--accent); color:var(--accent-ink); border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -523,7 +268,7 @@
     <h1>Chalk &amp; Cart</h1>
     <span class="tag">say it, see it, shop it</span>
   </div>
-  <p class="sub">Tap the mic and say something like "add two apples" or "find toothpaste under 5 dollars."</p>
+  <p class="sub">Tap the mic and say something like "add 2 apples" or "find chips under 30 rupees." Vegetarian catalog only — every item shows brand options and ratings.</p>
 
   <div class="mode-row">
     <button class="mode-btn active" id="freeModeBtn">Free voice mode</button>
@@ -553,6 +298,9 @@
 
   <p class="transcript" id="transcript">Ready when you are.</p>
 
+  <div class="cat-tabs" id="catTabs"></div>
+  <div class="browse-grid" id="browseGrid"></div>
+
   <div class="grid">
     <div>
       <div class="stage" id="stage">
@@ -569,7 +317,7 @@
       <h2>Chalk &amp; Cart</h2>
       <p class="sub-r">— your list —</p>
       <div id="receiptLines"><div class="receipt-empty">Nothing on the list yet.</div></div>
-      <div class="receipt-total"><span>Total</span><span id="receiptTotal">$0.00</span></div>
+      <div class="receipt-total"><span>Total</span><span id="receiptTotal">₹0</span></div>
       <button class="clear-btn" id="clearBtn">Clear list</button>
     </div>
   </div>
@@ -578,56 +326,108 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ---- Catalog: vegetarian only, every item has 2 brands with price + rating ----
 const PRODUCTS = {
-  apple:{price:0.6,category:'produce',icon:'🍎'},
-  banana:{price:0.3,category:'produce',icon:'🍌'},
-  orange:{price:0.7,category:'produce',icon:'🍊'},
-  tomato:{price:0.5,category:'produce',icon:'🍅'},
-  potato:{price:0.4,category:'produce',icon:'🥔'},
-  onion:{price:0.35,category:'produce',icon:'🧅'},
-  milk:{price:3.2,category:'dairy',icon:'🥛'},
-  cheese:{price:4.5,category:'dairy',icon:'🧀'},
-  yogurt:{price:1.2,category:'dairy',icon:'🥣'},
-  egg:{price:0.25,category:'dairy',icon:'🥚'},
-  bread:{price:2.8,category:'bakery',icon:'🍞'},
-  rice:{price:3.0,category:'pantry',icon:'🍚'},
-  pasta:{price:1.9,category:'pantry',icon:'🍝'},
-  sugar:{price:2.2,category:'pantry',icon:'🧂'},
-  salt:{price:1.0,category:'pantry',icon:'🧂'},
-  coffee:{price:6.5,category:'pantry',icon:'☕'},
-  tea:{price:4.0,category:'pantry',icon:'🍵'},
-  water:{price:1.0,category:'beverages',icon:'💧'},
-  chicken:{price:5.5,category:'meat',icon:'🍗'},
-  toothpaste:{price:2.9,category:'household',icon:'🪥'},
-  chips:{price:2.5,category:'snacks',icon:'🥔'},
-  chocolate:{price:2.4,category:'snacks',icon:'🍫'},
-  butter:{price:3.1,category:'dairy',icon:'🧈'},
-  kesar:{price:5.5,category:'pantry',icon:'🌼'}
+  // Fruits (15)
+  apple:{category:'fruits',unit:'1 kg',icon:'🍎',brands:[{brand:'Farm Fresh',price:180,rating:4.5,reviews:'3.2k'},{brand:'Kashmir Premium',price:220,rating:4.7,reviews:'1.8k'}]},
+  banana:{category:'fruits',unit:'1 dozen',icon:'🍌',brands:[{brand:'Farm Fresh',price:50,rating:4.4,reviews:'5.1k'},{brand:'Robusta Select',price:60,rating:4.6,reviews:'2.3k'}]},
+  orange:{category:'fruits',unit:'1 kg',icon:'🍊',brands:[{brand:'Nagpur Farms',price:90,rating:4.5,reviews:'2.9k'},{brand:'Farm Fresh',price:75,rating:4.3,reviews:'3.5k'}]},
+  mango:{category:'fruits',unit:'1 kg',icon:'🥭',brands:[{brand:'Alphonso Select',price:250,rating:4.8,reviews:'6.4k'},{brand:'Farm Fresh',price:180,rating:4.5,reviews:'4.1k'}]},
+  grapes:{category:'fruits',unit:'500 g',icon:'🍇',brands:[{brand:'Farm Fresh',price:60,rating:4.4,reviews:'3.0k'},{brand:'Nashik Select',price:80,rating:4.7,reviews:'2.2k'}]},
+  watermelon:{category:'fruits',unit:'1 pc',icon:'🍉',brands:[{brand:'Farm Fresh',price:45,rating:4.3,reviews:'1.9k'},{brand:'Premium Cut',price:65,rating:4.6,reviews:'1.1k'}]},
+  papaya:{category:'fruits',unit:'1 pc',icon:'🫐',brands:[{brand:'Farm Fresh',price:40,rating:4.2,reviews:'1.5k'},{brand:'Premium',price:55,rating:4.5,reviews:'900'}]},
+  pomegranate:{category:'fruits',unit:'1 kg',icon:'🍈',brands:[{brand:'Bhagwa Select',price:160,rating:4.6,reviews:'2.7k'},{brand:'Farm Fresh',price:130,rating:4.3,reviews:'2.0k'}]},
+  guava:{category:'fruits',unit:'1 kg',icon:'🍐',brands:[{brand:'Farm Fresh',price:70,rating:4.3,reviews:'1.4k'},{brand:'Premium',price:90,rating:4.5,reviews:'800'}]},
+  pineapple:{category:'fruits',unit:'1 pc',icon:'🍍',brands:[{brand:'Farm Fresh',price:55,rating:4.4,reviews:'1.6k'},{brand:'Kerala Select',price:70,rating:4.6,reviews:'1.0k'}]},
+  kiwi:{category:'fruits',unit:'3 pcs',icon:'🥝',brands:[{brand:'Imported',price:120,rating:4.5,reviews:'2.1k'},{brand:'Farm Fresh',price:95,rating:4.2,reviews:'1.3k'}]},
+  pear:{category:'fruits',unit:'1 kg',icon:'🍐',brands:[{brand:'Farm Fresh',price:110,rating:4.3,reviews:'1.2k'},{brand:'Premium',price:140,rating:4.6,reviews:'700'}]},
+  strawberry:{category:'fruits',unit:'200 g',icon:'🍓',brands:[{brand:'Mahabaleshwar Select',price:90,rating:4.7,reviews:'3.3k'},{brand:'Farm Fresh',price:70,rating:4.4,reviews:'2.5k'}]},
+  chikoo:{category:'fruits',unit:'1 kg',icon:'🍈',brands:[{brand:'Farm Fresh',price:65,rating:4.3,reviews:'900'},{brand:'Premium',price:80,rating:4.5,reviews:'600'}]},
+  muskmelon:{category:'fruits',unit:'1 pc',icon:'🍈',brands:[{brand:'Farm Fresh',price:40,rating:4.2,reviews:'1.1k'},{brand:'Premium',price:55,rating:4.4,reviews:'700'}]},
+
+  // Vegetables (20)
+  potato:{category:'vegetables',unit:'1 kg',icon:'🥔',brands:[{brand:'Farm Fresh',price:31,rating:4.4,reviews:'12.3k'},{brand:'No Black Spots',price:40,rating:4.6,reviews:'5.2k'}]},
+  onion:{category:'vegetables',unit:'1 kg',icon:'🧅',brands:[{brand:'Nashik Select',price:37,rating:4.3,reviews:'9.1k'},{brand:'Farm Fresh',price:30,rating:4.2,reviews:'7.4k'}]},
+  tomato:{category:'vegetables',unit:'1 kg',icon:'🍅',brands:[{brand:'Farm Fresh',price:35,rating:4.3,reviews:'8.0k'},{brand:'Hybrid Select',price:45,rating:4.5,reviews:'3.1k'}]},
+  spinach:{category:'vegetables',unit:'250 g',icon:'🥬',brands:[{brand:'Farm Fresh',price:25,rating:4.4,reviews:'4.2k'},{brand:'Pesticide-Free',price:38,rating:4.7,reviews:'1.9k'}]},
+  cauliflower:{category:'vegetables',unit:'1 pc',icon:'🥦',brands:[{brand:'Farm Fresh',price:35,rating:4.2,reviews:'3.0k'},{brand:'Premium',price:45,rating:4.5,reviews:'1.4k'}]},
+  cabbage:{category:'vegetables',unit:'1 pc',icon:'🥬',brands:[{brand:'Farm Fresh',price:29,rating:4.1,reviews:'5.6k'},{brand:'Premium',price:38,rating:4.4,reviews:'2.0k'}]},
+  capsicum:{category:'vegetables',unit:'500 g',icon:'🫑',brands:[{brand:'Farm Fresh',price:28,rating:4.3,reviews:'4.4k'},{brand:'Green Select',price:36,rating:4.5,reviews:'2.1k'}]},
+  carrot:{category:'vegetables',unit:'500 g',icon:'🥕',brands:[{brand:'Ooty Select',price:32,rating:4.4,reviews:'3.8k'},{brand:'Farm Fresh',price:26,rating:4.2,reviews:'5.0k'}]},
+  cucumber:{category:'vegetables',unit:'500 g',icon:'🥒',brands:[{brand:'Farm Fresh',price:22,rating:4.2,reviews:'4.9k'},{brand:'English Select',price:34,rating:4.5,reviews:'1.6k'}]},
+  brinjal:{category:'vegetables',unit:'500 g',icon:'🍆',brands:[{brand:'Farm Fresh',price:26,rating:4.1,reviews:'2.4k'},{brand:'Long Purple Select',price:33,rating:4.4,reviews:'1.2k'}]},
+  peas:{category:'vegetables',unit:'500 g',icon:'🟢',brands:[{brand:'Farm Fresh',price:45,rating:4.4,reviews:'3.5k'},{brand:'Shelled Premium',price:60,rating:4.6,reviews:'1.8k'}]},
+  beetroot:{category:'vegetables',unit:'500 g',icon:'🟣',brands:[{brand:'Farm Fresh',price:28,rating:4.2,reviews:'1.7k'},{brand:'Premium',price:36,rating:4.4,reviews:'900'}]},
+  radish:{category:'vegetables',unit:'500 g',icon:'🥕',brands:[{brand:'Farm Fresh',price:24,rating:4.0,reviews:'1.3k'},{brand:'Premium',price:30,rating:4.3,reviews:'700'}]},
+  ladyfinger:{category:'vegetables',unit:'500 g',icon:'🌿',brands:[{brand:'Farm Fresh',price:30,rating:4.2,reviews:'2.1k'},{brand:'Tender Select',price:38,rating:4.5,reviews:'1.0k'}]},
+  'bottle gourd':{category:'vegetables',unit:'1 pc',icon:'🥒',brands:[{brand:'Farm Fresh',price:26,rating:4.1,reviews:'900'},{brand:'Premium',price:34,rating:4.3,reviews:'500'}]},
+  'bitter gourd':{category:'vegetables',unit:'500 g',icon:'🥒',brands:[{brand:'Farm Fresh',price:32,rating:4.0,reviews:'800'},{brand:'Premium',price:40,rating:4.3,reviews:'400'}]},
+  pumpkin:{category:'vegetables',unit:'1 kg',icon:'🎃',brands:[{brand:'Farm Fresh',price:28,rating:4.1,reviews:'1.2k'},{brand:'Premium',price:36,rating:4.3,reviews:'600'}]},
+  garlic:{category:'vegetables',unit:'250 g',icon:'🧄',brands:[{brand:'Farm Fresh',price:45,rating:4.3,reviews:'3.9k'},{brand:'Premium Peeled',price:65,rating:4.6,reviews:'1.7k'}]},
+  ginger:{category:'vegetables',unit:'250 g',icon:'🫚',brands:[{brand:'Farm Fresh',price:33,rating:4.2,reviews:'3.1k'},{brand:'Premium',price:48,rating:4.5,reviews:'1.3k'}]},
+  coriander:{category:'vegetables',unit:'1 bunch',icon:'🌿',brands:[{brand:'Farm Fresh',price:12,rating:4.1,reviews:'6.2k'},{brand:'Pesticide-Free',price:20,rating:4.5,reviews:'2.0k'}]},
+
+  // Dairy (8)
+  milk:{category:'dairy',unit:'500 ml',icon:'🥛',brands:[{brand:'Amul',price:32,rating:4.6,reviews:'50.2k'},{brand:'Mother Dairy',price:34,rating:4.5,reviews:'38.1k'}]},
+  curd:{category:'dairy',unit:'400 g',icon:'🥣',brands:[{brand:'Amul',price:45,rating:4.6,reviews:'20.3k'},{brand:'Mother Dairy',price:42,rating:4.4,reviews:'15.8k'}]},
+  paneer:{category:'dairy',unit:'200 g',icon:'🧀',brands:[{brand:'Amul',price:90,rating:4.6,reviews:'22.1k'},{brand:'Milky Mist',price:96,rating:4.7,reviews:'11.4k'}]},
+  butter:{category:'dairy',unit:'100 g',icon:'🧈',brands:[{brand:'Amul Salted',price:63,rating:4.7,reviews:'40.5k'},{brand:'Britannia',price:60,rating:4.5,reviews:'18.2k'}]},
+  cheese:{category:'dairy',unit:'200 g',icon:'🧀',brands:[{brand:'Amul Cubes',price:130,rating:4.6,reviews:'19.0k'},{brand:'Milky Mist Slices',price:96,rating:4.4,reviews:'9.6k'}]},
+  ghee:{category:'dairy',unit:'500 ml',icon:'🧈',brands:[{brand:'Amul',price:325,rating:4.7,reviews:'9.8k'},{brand:'Gowardhan',price:182,rating:4.7,reviews:'18.4k'}]},
+  cream:{category:'dairy',unit:'200 ml',icon:'🥛',brands:[{brand:'Amul',price:60,rating:4.5,reviews:'6.1k'},{brand:'Mother Dairy',price:58,rating:4.4,reviews:'4.3k'}]},
+  buttermilk:{category:'dairy',unit:'200 ml',icon:'🥛',brands:[{brand:'Amul Chaas',price:15,rating:4.4,reviews:'12.0k'},{brand:'Mother Dairy Masti',price:16,rating:4.3,reviews:'8.9k'}]},
+
+  // Sweets (10)
+  rasgulla:{category:'sweets',unit:'500 g',icon:'🍡',brands:[{brand:"Haldiram's",price:150,rating:4.6,reviews:'7.2k'},{brand:'Bikano',price:140,rating:4.4,reviews:'4.1k'}]},
+  'gulab jamun':{category:'sweets',unit:'500 g',icon:'🍡',brands:[{brand:"Haldiram's",price:160,rating:4.7,reviews:'9.5k'},{brand:'Bikano',price:145,rating:4.5,reviews:'5.0k'}]},
+  barfi:{category:'sweets',unit:'400 g',icon:'🍬',brands:[{brand:"Haldiram's",price:180,rating:4.6,reviews:'4.4k'},{brand:'Bikano',price:165,rating:4.4,reviews:'2.8k'}]},
+  'kaju katli':{category:'sweets',unit:'250 g',icon:'🍬',brands:[{brand:"Haldiram's",price:250,rating:4.8,reviews:'11.2k'},{brand:'Bikano',price:220,rating:4.6,reviews:'6.3k'}]},
+  jalebi:{category:'sweets',unit:'250 g',icon:'🍥',brands:[{brand:"Haldiram's",price:110,rating:4.5,reviews:'3.6k'},{brand:'Local Sweets',price:90,rating:4.3,reviews:'2.1k'}]},
+  ladoo:{category:'sweets',unit:'400 g',icon:'🍡',brands:[{brand:"Haldiram's",price:170,rating:4.6,reviews:'5.9k'},{brand:'Bikano',price:150,rating:4.4,reviews:'3.2k'}]},
+  peda:{category:'sweets',unit:'250 g',icon:'🍬',brands:[{brand:"Haldiram's",price:130,rating:4.5,reviews:'2.9k'},{brand:'Local Sweets',price:110,rating:4.3,reviews:'1.5k'}]},
+  halwa:{category:'sweets',unit:'400 g',icon:'🍮',brands:[{brand:"Haldiram's",price:190,rating:4.6,reviews:'3.1k'},{brand:'Bikano',price:170,rating:4.4,reviews:'1.8k'}]},
+  rasmalai:{category:'sweets',unit:'400 g',icon:'🍮',brands:[{brand:"Haldiram's",price:210,rating:4.7,reviews:'6.7k'},{brand:'Bikano',price:190,rating:4.5,reviews:'3.0k'}]},
+  'soan papdi':{category:'sweets',unit:'250 g',icon:'🍥',brands:[{brand:"Haldiram's",price:100,rating:4.5,reviews:'8.1k'},{brand:'Bikano',price:90,rating:4.3,reviews:'4.6k'}]},
+
+  // Snacks (8)
+  'potato chips':{category:'snacks',unit:'80 g',icon:'🥔',brands:[{brand:"Lay's",price:25,rating:4.6,reviews:'62.0k'},{brand:'Bingo',price:22,rating:4.4,reviews:'21.3k'}]},
+  nachos:{category:'snacks',unit:'130 g',icon:'🌽',brands:[{brand:'Act II',price:49,rating:4.5,reviews:'9.4k'},{brand:'Doritos',price:55,rating:4.7,reviews:'12.1k'}]},
+  popcorn:{category:'snacks',unit:'100 g',icon:'🍿',brands:[{brand:'Act II Butter',price:30,rating:4.5,reviews:'15.2k'},{brand:'4700BC',price:45,rating:4.6,reviews:'6.8k'}]},
+  kurkure:{category:'snacks',unit:'85 g',icon:'🌽',brands:[{brand:'Kurkure Masala Munch',price:20,rating:4.7,reviews:'192.2k'},{brand:'Kurkure Chilli Chatka',price:20,rating:4.7,reviews:'252.3k'}]},
+  bhujia:{category:'snacks',unit:'200 g',icon:'🥨',brands:[{brand:"Haldiram's",price:55,rating:4.6,reviews:'30.1k'},{brand:'Bikano',price:48,rating:4.4,reviews:'14.5k'}]},
+  'namkeen mixture':{category:'snacks',unit:'200 g',icon:'🥨',brands:[{brand:"Haldiram's",price:60,rating:4.5,reviews:'11.0k'},{brand:'Bikano',price:52,rating:4.3,reviews:'6.2k'}]},
+  biscuits:{category:'snacks',unit:'188 g',icon:'🍪',brands:[{brand:'Britannia Milk Bikis',price:46,rating:4.5,reviews:'9.0k'},{brand:'Parle-G',price:30,rating:4.6,reviews:'55.4k'}]},
+  cookies:{category:'snacks',unit:'150 g',icon:'🍪',brands:[{brand:'Britannia Good Day',price:35,rating:4.6,reviews:'40.2k'},{brand:'Sunfeast',price:32,rating:4.4,reviews:'18.7k'}]},
+
+  // Pantry (needed for recipes)
+  bread:{category:'pantry',unit:'400 g',icon:'🍞',brands:[{brand:'Modern Zero Maida',price:60,rating:4.4,reviews:'6.1k'},{brand:'Britannia',price:45,rating:4.3,reviews:'12.9k'}]},
+  rice:{category:'pantry',unit:'1 kg',icon:'🍚',brands:[{brand:'India Gate Basmati',price:93,rating:4.2,reviews:'10.9k'},{brand:'Daawat Rozana',price:93,rating:4.3,reviews:'92.0k'}]},
+  sugar:{category:'pantry',unit:'1 kg',icon:'🧂',brands:[{brand:'Madhur',price:48,rating:4.4,reviews:'8.2k'},{brand:'Dhampure',price:52,rating:4.3,reviews:'4.6k'}]},
+  salt:{category:'pantry',unit:'1 kg',icon:'🧂',brands:[{brand:'Tata Salt',price:28,rating:4.6,reviews:'70.5k'},{brand:'Aashirvaad',price:26,rating:4.4,reviews:'20.1k'}]},
+  tea:{category:'pantry',unit:'250 g',icon:'🍵',brands:[{brand:'Tata Tea Gold',price:140,rating:4.6,reviews:'33.2k'},{brand:'Red Label',price:130,rating:4.5,reviews:'28.9k'}]},
+  coffee:{category:'pantry',unit:'200 g',icon:'☕',brands:[{brand:'Nescafe Classic',price:230,rating:4.6,reviews:'44.1k'},{brand:'Bru Gold',price:210,rating:4.4,reviews:'19.7k'}]},
+  chocolate:{category:'pantry',unit:'70 g',icon:'🍫',brands:[{brand:"Hershey's Cocoa",price:157,rating:4.5,reviews:'6.0k'},{brand:'Cadbury Cocoa',price:145,rating:4.6,reviews:'9.3k'}]},
+  'wheat atta':{category:'pantry',unit:'5 kg',icon:'🌾',brands:[{brand:'Aashirvaad',price:245,rating:4.6,reviews:'50.1k'},{brand:'Samrat MP Chakki',price:220,rating:4.4,reviews:'12.3k'}]},
+  'cooking oil':{category:'pantry',unit:'1 L',icon:'🛢️',brands:[{brand:'Fortune Sunflower',price:175,rating:4.7,reviews:'267.3k'},{brand:'Gemini Sunflower',price:169,rating:4.7,reviews:'51.9k'}]},
+  poha:{category:'pantry',unit:'1 kg',icon:'🍚',brands:[{brand:'Tata Sampann',price:85,rating:4.7,reviews:'11.2k'},{brand:'Fortune Thick',price:89,rating:4.8,reviews:'682'}]},
+  kesar:{category:'pantry',unit:'1 g',icon:'🌼',brands:[{brand:'Kashmir Saffron Co',price:180,rating:4.6,reviews:'2.0k'},{brand:'24 Mantra',price:210,rating:4.7,reviews:'900'}]}
 };
 
 const SUBSTITUTES = {
-  milk:['almond milk','oat milk'],
-  sugar:['honey','stevia'],
-  rice:['quinoa'],
-  chips:['pretzels']
+  milk:['curd','buttermilk'],
+  sugar:['jalebi'],
+  rice:['poha']
 };
 
-const SEASONAL = ['orange','tomato','bread','coffee'];
+const SEASONAL = ['mango','watermelon','strawberry','coffee'];
 
-// Items with more than one brand — triggers the brand-picker card in guided mode
-const BRANDS = {
-  bread:[
-    {brand:'Daily Fresh', price:2.6},
-    {brand:'Harvest Gold', price:2.9},
-    {brand:'Local Bakery', price:2.2}
-  ],
-  milk:[
-    {brand:'Farmhouse', price:3.0},
-    {brand:'Meadow Dairy', price:3.4}
-  ]
+const CATEGORIES = ['fruits','vegetables','dairy','sweets','snacks','pantry'];
+const CATEGORY_LABELS = {
+  fruits:'Fruits', vegetables:'Vegetables', dairy:'Dairy',
+  sweets:'Sweets', snacks:'Snacks', pantry:'Pantry'
 };
 
-// Simple recipe → ingredient dataset. Ten dishes, kept intentionally small.
+// Thirty vegetarian recipes — every ingredient exists in PRODUCTS above.
 const RECIPES = {
   'choco milk':['milk','chocolate'],
   'kesar milk':['milk','kesar','sugar'],
@@ -636,15 +436,39 @@ const RECIPES = {
   'bread butter':['bread','butter'],
   'tea':['tea','milk','sugar'],
   'coffee':['coffee','milk','sugar'],
-  'omelette':['egg','onion','tomato','salt'],
-  'veg pasta':['pasta','tomato','cheese'],
-  'fruit salad':['apple','banana','orange']
+  'veg pasta':['rice','tomato','cheese'],
+  'veg sandwich':['bread','cheese','tomato'],
+  'fruit salad':['apple','banana','orange'],
+  'curd rice':['rice','curd','salt'],
+  'aloo paratha':['potato','wheat atta','butter'],
+  'poha':['poha','onion','peas'],
+  'veg pulao':['rice','peas','carrot'],
+  'paneer bhurji':['paneer','onion','tomato'],
+  'palak paneer':['spinach','paneer','onion'],
+  'mixed veg curry':['potato','carrot','peas','tomato'],
+  'cucumber raita':['cucumber','curd','salt'],
+  'vegetable soup':['carrot','tomato','onion'],
+  'lassi':['curd','sugar','milk'],
+  'buttermilk':['curd','salt','ginger'],
+  'fruit custard':['milk','apple','banana'],
+  'aloo gobi':['potato','cauliflower','onion'],
+  'bhindi fry':['ladyfinger','onion','salt'],
+  'baingan bharta':['brinjal','onion','tomato'],
+  'carrot halwa':['carrot','milk','sugar'],
+  'popcorn mix':['popcorn','butter','salt'],
+  'veg cheese nachos':['nachos','cheese','tomato'],
+  'gulab jamun sundae':['gulab jamun','milk','cream'],
+  'veg cutlet':['potato','peas','cooking oil']
 };
 
 const NUM_WORDS = {one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,a:1,an:1,couple:2};
 
+// Longest-key-first so multi-word items ("potato chips") match before single words ("potato")
+const PRODUCT_KEYS_BY_LENGTH = Object.keys(PRODUCTS).sort((a,b)=>b.length-a.length);
+
 let cart = [];
 let recognizedItem = null;
+let activeCategory = 'fruits';
 
 const transcriptEl = document.getElementById('transcript');
 const stageEl = document.getElementById('stage');
@@ -658,6 +482,12 @@ function showToast(msg){
   setTimeout(()=>toastEl.classList.remove('show'), 1800);
 }
 
+function money(n){ return '₹'+Math.round(n); }
+
+function cheapestPrice(itemKey){
+  return Math.min(...PRODUCTS[itemKey].brands.map(b=>b.price));
+}
+
 function singular(word){
   if(word.endsWith('ies')) return word.slice(0,-3)+'y';
   if(word.endsWith('es')) return word.slice(0,-2);
@@ -666,12 +496,12 @@ function singular(word){
 }
 
 function findProduct(text){
+  for(const key of PRODUCT_KEYS_BY_LENGTH){
+    if(text.includes(key)) return key;
+  }
   const words = text.split(/\s+/).map(singular);
   for(const w of words){
     if(PRODUCTS[w]) return w;
-  }
-  for(const key of Object.keys(PRODUCTS)){
-    if(text.includes(key)) return key;
   }
   return null;
 }
@@ -680,7 +510,7 @@ function parseCommand(raw){
   const text = raw.toLowerCase().trim();
 
   let priceUnder = null;
-  const priceMatch = text.match(/under\s*\$?(\d+(\.\d+)?)/);
+  const priceMatch = text.match(/under\s*(?:₹|rs\.?|rupees\s*)?(\d+(\.\d+)?)/);
   if(priceMatch) priceUnder = parseFloat(priceMatch[1]);
 
   let action = 'add';
@@ -708,9 +538,16 @@ function renderSticker(itemKey, quantity){
   card.className = 'sticker';
   card.id = 'activeSticker';
 
+  const brandRow = product.brands.map((b,i)=>`
+    <div class="brand-pill ${i===0?'selected':''}" data-idx="${i}" onclick="selectBrand(this,${i})">
+      <span class="bp-name">${b.brand}</span>
+      <span class="bp-rating">★ ${b.rating} <small>(${b.reviews})</small></span>
+      <span class="bp-price">${money(b.price)}</span>
+    </div>`).join('');
+
   let noteHtml = '';
   if(SUBSTITUTES[itemKey]){
-    noteHtml = `<div class="subs-row">No ${itemKey}? Try
+    noteHtml = `<div class="subs-row">Out of ${itemKey}? Try
       ${SUBSTITUTES[itemKey].map(s=>`<button onclick="quickAddText('${s}')">${s}</button>`).join(' or ')}.
     </div>`;
   }
@@ -720,10 +557,11 @@ function renderSticker(itemKey, quantity){
       <div class="sticker-icon">${product.icon}</div>
       <div>
         <p class="sticker-name">${itemKey}</p>
-        <p class="sticker-cat">${product.category}</p>
+        <p class="sticker-cat">${product.category} · ${product.unit}</p>
       </div>
       <div class="sticker-note">${SEASONAL.includes(itemKey) ? "in season right now" : ""}</div>
     </div>
+    <div class="brand-row">${brandRow}</div>
     <div class="sticker-controls">
       <div class="field">
         <label>Quantity</label>
@@ -733,16 +571,18 @@ function renderSticker(itemKey, quantity){
           <button onclick="stepQty(1)">+</button>
         </div>
       </div>
-      <div class="field">
-        <label>Price / unit</label>
-        <input class="price-input" id="priceVal" type="number" step="0.01" value="${product.price.toFixed(2)}" />
-      </div>
       <button class="add-cart-btn" onclick="confirmAdd('${itemKey}')">Add to cart</button>
     </div>
     ${noteHtml}
   `;
   stageEl.appendChild(card);
-  recognizedItem = {itemKey, quantity};
+  recognizedItem = {itemKey, quantity, brandIdx:0};
+}
+
+function selectBrand(el, idx){
+  document.querySelectorAll('#stage .brand-pill').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+  recognizedItem.brandIdx = idx;
 }
 
 function stepQty(delta){
@@ -753,23 +593,23 @@ function stepQty(delta){
 }
 
 function confirmAdd(itemKey){
-  const price = parseFloat(document.getElementById('priceVal').value) || PRODUCTS[itemKey].price;
+  const b = PRODUCTS[itemKey].brands[recognizedItem.brandIdx];
   const qty = recognizedItem.quantity;
-  const existing = cart.find(c=>c.key===itemKey);
+  const existing = cart.find(c=>c.key===itemKey && c.brand===b.brand);
   if(existing){ existing.qty += qty; }
-  else { cart.push({key:itemKey, qty, price, category:PRODUCTS[itemKey].category}); }
+  else { cart.push({key:itemKey, brand:b.brand, qty, price:b.price, category:PRODUCTS[itemKey].category}); }
 
   const sticker = document.getElementById('activeSticker');
   sticker.classList.add('leaving');
-  showToast(`Added ${qty} × ${itemKey} to your list`);
+  showToast(`Added ${qty} × ${b.brand} ${itemKey} to your list`);
   setTimeout(()=>{
     stageEl.innerHTML = '<div class="empty-stage">Recognized items will appear here as sticker cards.</div>';
   }, 380);
   renderCart();
 }
 
-function removeFromCart(key){
-  cart = cart.filter(c=>c.key!==key);
+function removeFromCart(key, brand){
+  cart = cart.filter(c=>!(c.key===key && c.brand===brand));
   renderCart();
 }
 
@@ -778,7 +618,7 @@ function renderCart(){
   const totalEl = document.getElementById('receiptTotal');
   if(cart.length===0){
     linesEl.innerHTML = '<div class="receipt-empty">Nothing on the list yet.</div>';
-    totalEl.textContent = '$0.00';
+    totalEl.textContent = '₹0';
     return;
   }
   let total = 0;
@@ -786,12 +626,12 @@ function renderCart(){
     const lineTotal = c.qty*c.price;
     total += lineTotal;
     return `<div class="receipt-line">
-      <span class="rname">${c.qty}x ${c.key}</span>
-      <span>$${lineTotal.toFixed(2)}</span>
-      <button onclick="removeFromCart('${c.key}')" aria-label="Remove ${c.key}">×</button>
+      <span class="rname">${c.qty}x ${c.key} (${c.brand})</span>
+      <span>${money(lineTotal)}</span>
+      <button onclick="removeFromCart('${c.key}','${escJs(c.brand)}')" aria-label="Remove ${c.key}">×</button>
     </div>`;
   }).join('');
-  totalEl.textContent = '$'+total.toFixed(2);
+  totalEl.textContent = money(total);
 }
 
 function renderSearch(results, priceUnder){
@@ -799,12 +639,12 @@ function renderSearch(results, priceUnder){
   const wrap = document.createElement('div');
   wrap.className = 'sticker search-results';
   if(results.length===0){
-    wrap.innerHTML = `<p style="margin:0;color:var(--muted);font-size:14px;">No matches${priceUnder?` under $${priceUnder}`:''}.</p>`;
+    wrap.innerHTML = `<p style="margin:0;color:var(--muted);font-size:14px;">No matches${priceUnder?` under ₹${priceUnder}`:''}.</p>`;
   } else {
     wrap.innerHTML = `<p class="sticker-name" style="margin-bottom:8px;">Search results</p>` +
       results.map(([key,p])=>`
         <div class="search-row">
-          <span>${p.icon} ${key} — $${p.price.toFixed(2)}</span>
+          <span>${p.icon} ${key} — from ${money(cheapestPrice(key))}</span>
           <button onclick="quickAddText('${key}')">Add</button>
         </div>`).join('');
   }
@@ -824,14 +664,15 @@ function handleCommand(raw){
       if(parsed.item) return key===parsed.item || key.includes(parsed.item);
       return true;
     });
-    if(parsed.priceUnder!==null) results = results.filter(([,p])=>p.price<=parsed.priceUnder);
+    if(parsed.priceUnder!==null) results = results.filter(([key])=>cheapestPrice(key)<=parsed.priceUnder);
     renderSearch(results, parsed.priceUnder);
     return;
   }
 
   if(parsed.action==='remove'){
-    if(parsed.item && cart.find(c=>c.key===parsed.item)){
-      removeFromCart(parsed.item);
+    const existing = cart.find(c=>c.key===parsed.item);
+    if(parsed.item && existing){
+      removeFromCart(parsed.item, existing.brand);
       showToast(`Removed ${parsed.item} from your list`);
     } else {
       showToast(parsed.item ? `${parsed.item} isn't in your cart` : "Couldn't tell what to remove");
@@ -846,6 +687,58 @@ function handleCommand(raw){
 
   renderSticker(parsed.item, parsed.quantity);
 }
+
+// ---- Category browser ----
+function renderCatTabs(){
+  const tabsEl = document.getElementById('catTabs');
+  tabsEl.innerHTML = CATEGORIES.map(cat =>
+    `<div class="cat-tab ${cat===activeCategory?'active':''}" onclick="setCategory('${cat}')">${CATEGORY_LABELS[cat]}</div>`
+  ).join('');
+}
+
+function setCategory(cat){
+  activeCategory = cat;
+  renderCatTabs();
+  renderBrowseGrid();
+}
+
+function renderBrowseGrid(){
+  const gridEl = document.getElementById('browseGrid');
+  const items = Object.entries(PRODUCTS).filter(([,p])=>p.category===activeCategory);
+  gridEl.innerHTML = items.map(([key,p])=>{
+    const best = p.brands.reduce((a,b)=> b.rating>a.rating? b:a, p.brands[0]);
+    return `<div class="browse-item" onclick="quickAddText('${key}')">
+      <div class="bi-icon">${p.icon}</div>
+      <div class="bi-name">${key}</div>
+      <div class="bi-price">from ${money(cheapestPrice(key))}</div>
+      <div class="bi-rating">★ ${best.rating}</div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('textSubmit').onclick = () => {
+  const input = document.getElementById('textInput');
+  if(input.value.trim()){
+    handleInput(input.value.trim());
+    input.value = '';
+  }
+};
+document.getElementById('textInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter') document.getElementById('textSubmit').click();
+});
+document.getElementById('clearBtn').onclick = () => {
+  cart = [];
+  renderCart();
+  showToast('List cleared');
+};
+
+document.getElementById('picksRow').innerHTML = SEASONAL.map(key =>
+  `<div class="chip" onclick="quickAddText('${key}')">${PRODUCTS[key].icon} ${key}</div>`
+).join('');
+
+renderCatTabs();
+renderBrowseGrid();
+renderCart();
 
 // ---- Guided "cook with me" conversation engine ----
 let mode = 'free'; // 'free' | 'guided'
@@ -889,7 +782,7 @@ function startGuidedMode(){
   brandPickerEl.innerHTML = '';
   convo = {stage:'awaiting_recipe', remaining:[], done:[], recipeName:null, pendingItem:null};
   checklistEl.innerHTML = '';
-  botSay("What are you making today? Try a recipe like choco milk, kesar milk, or omelette.");
+  botSay("What are you making today? Try a recipe like choco milk, veg pulao, or aloo paratha.");
 }
 
 function exitGuidedMode(){
@@ -916,24 +809,26 @@ function promptNextIngredient(){
   convo.stage = 'collecting';
 }
 
-function addIngredientToCart(itemKey, price){
-  const existing = cart.find(c=>c.key===itemKey);
+function addIngredientToCart(itemKey, brand, price){
+  const existing = cart.find(c=>c.key===itemKey && c.brand===brand);
   if(existing){ existing.qty += 1; }
-  else { cart.push({key:itemKey, qty:1, price:price, category:PRODUCTS[itemKey].category}); }
+  else { cart.push({key:itemKey, brand, qty:1, price, category:PRODUCTS[itemKey].category}); }
   renderCart();
 }
 
+function escJs(str){ return str.replace(/'/g, "\\'"); }
+
 function showBrandPicker(itemKey){
-  brandPickerEl.innerHTML = BRANDS[itemKey].map(b => `
-    <div class="brand-card" onclick="pickBrand('${itemKey}','${b.brand}')">
+  brandPickerEl.innerHTML = PRODUCTS[itemKey].brands.map(b => `
+    <div class="brand-card" onclick="pickBrand('${itemKey}','${escJs(b.brand)}')">
       <div class="bname">${b.brand}</div>
-      <div class="bprice">$${b.price.toFixed(2)}</div>
+      <div class="bprice">${money(b.price)} · ★ ${b.rating}</div>
     </div>`).join('');
 }
 
 function pickBrand(itemKey, brandName){
-  const b = BRANDS[itemKey].find(x=>x.brand===brandName);
-  addIngredientToCart(itemKey, b.price);
+  const b = PRODUCTS[itemKey].brands.find(x=>x.brand===brandName);
+  addIngredientToCart(itemKey, brandName, b.price);
   userSay(brandName);
   botSay(`Added ${brandName} ${itemKey}.`);
   brandPickerEl.innerHTML = '';
@@ -969,26 +864,18 @@ function handleGuidedInput(raw){
       botSay(`That didn't match ${expected}. Please say: ${expected}.`);
       return;
     }
-    if(BRANDS[itemKey]){
-      botSay(`We have a few options for ${itemKey} — pick one, or say the brand name.`);
-      showBrandPicker(itemKey);
-      convo.stage = 'choosing_brand';
-      convo.pendingItem = itemKey;
-      return;
-    }
-    addIngredientToCart(itemKey, PRODUCTS[itemKey].price);
-    botSay(`Added ${itemKey}.`);
-    convo.remaining = convo.remaining.filter(x=>x!==itemKey);
-    convo.done.push(itemKey);
-    promptNextIngredient();
+    botSay(`We have a few options for ${itemKey} — pick one, or say the brand name.`);
+    showBrandPicker(itemKey);
+    convo.stage = 'choosing_brand';
+    convo.pendingItem = itemKey;
     return;
   }
 
   if(convo.stage==='choosing_brand'){
     const itemKey = convo.pendingItem;
-    const match = BRANDS[itemKey].find(b=>text.includes(b.brand.toLowerCase()));
+    const match = PRODUCTS[itemKey].brands.find(b=>text.includes(b.brand.toLowerCase()));
     if(!match){
-      botSay(`Didn't catch that. Options are: ${BRANDS[itemKey].map(b=>b.brand).join(', ')}.`);
+      botSay(`Didn't catch that. Options are: ${PRODUCTS[itemKey].brands.map(b=>b.brand).join(', ')}.`);
       return;
     }
     pickBrand(itemKey, match.brand);
@@ -1028,28 +915,6 @@ document.getElementById('freeModeBtn').onclick = () => {
   document.getElementById('guidedModeBtn').classList.remove('active');
   exitGuidedMode();
 };
-
-document.getElementById('textSubmit').onclick = () => {
-  const input = document.getElementById('textInput');
-  if(input.value.trim()){
-    handleInput(input.value.trim());
-    input.value = '';
-  }
-};
-document.getElementById('textInput').addEventListener('keydown', e=>{
-  if(e.key==='Enter') document.getElementById('textSubmit').click();
-});
-document.getElementById('clearBtn').onclick = () => {
-  cart = [];
-  renderCart();
-  showToast('List cleared');
-};
-
-document.getElementById('picksRow').innerHTML = SEASONAL.map(key =>
-  `<div class="chip" onclick="quickAddText('${key}')">${PRODUCTS[key].icon} ${key}</div>`
-).join('');
-
-renderCart();
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
