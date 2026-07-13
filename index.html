@@ -308,6 +308,11 @@
         <div class="empty-stage">Recognized items will appear here as sticker cards.</div>
       </div>
 
+      <div class="picks" id="pairingsWrap" style="display:none;">
+        <h3 id="pairingsHeading">Goes well with</h3>
+        <div class="chip-row" id="pairingsRow"></div>
+      </div>
+
       <div class="picks" id="frequentPicksWrap" style="display:none;">
         <h3>Based on your shopping</h3>
         <div class="chip-row" id="frequentRow"></div>
@@ -426,6 +431,47 @@ const SUBSTITUTES = {
 };
 
 const SEASONAL = ['mango','watermelon','strawberry','coffee'];
+
+// "Goes well with" pairings — curated combos first, falls back to
+// same-category items (so any fruit suggests other fruits, any
+// vegetable suggests other vegetables) when there's no specific rule.
+const PAIRINGS = {
+  cheese:['bread'], bread:['butter','cheese'], butter:['bread'],
+  onion:['potato','tomato'], potato:['onion'], tomato:['onion','garlic'],
+  milk:['tea','coffee'], tea:['milk','sugar'], coffee:['milk','sugar'],
+  paneer:['onion','capsicum'], chocolate:['milk'], rice:['peas'],
+  curd:['rice','cucumber'], ginger:['tea'], garlic:['onion','tomato'],
+  spinach:['paneer'], cauliflower:['potato'], nachos:['cheese'],
+  popcorn:['butter']
+};
+
+function getPairingSuggestions(itemKey){
+  const inCartKeys = new Set(cart.map(c=>c.key));
+  let suggestions = (PAIRINGS[itemKey]||[]).filter(k=>!inCartKeys.has(k));
+  if(suggestions.length===0){
+    const cat = PRODUCTS[itemKey].category;
+    if(cat==='fruits' || cat==='vegetables'){
+      suggestions = Object.keys(PRODUCTS)
+        .filter(k=>PRODUCTS[k].category===cat && k!==itemKey && !inCartKeys.has(k))
+        .slice(0,2);
+    }
+  }
+  return suggestions.slice(0,3);
+}
+
+function renderPairings(itemKey){
+  const wrapEl = document.getElementById('pairingsWrap');
+  const rowEl = document.getElementById('pairingsRow');
+  const headingEl = document.getElementById('pairingsHeading');
+  const suggestions = getPairingSuggestions(itemKey);
+  if(!wrapEl) return;
+  if(suggestions.length===0){ wrapEl.style.display='none'; return; }
+  wrapEl.style.display='block';
+  headingEl.textContent = `Goes well with ${itemKey}`;
+  rowEl.innerHTML = suggestions.map(key =>
+    `<div class="chip" onclick="quickAddText('${key}')">${PRODUCTS[key].icon} ${key}</div>`
+  ).join('');
+}
 
 const CATEGORIES = ['fruits','vegetables','dairy','sweets','snacks','pantry'];
 const CATEGORY_LABELS = {
@@ -646,6 +692,7 @@ function confirmAdd(itemKey){
   else { cart.push({key:itemKey, brand:b.brand, qty, price:b.price, category:PRODUCTS[itemKey].category}); }
 
   recordPurchase(itemKey);
+  renderPairings(itemKey);
 
   const sticker = document.getElementById('activeSticker');
   sticker.classList.add('leaving');
@@ -889,6 +936,7 @@ function addIngredientToCart(itemKey, brand, price){
   if(existing){ existing.qty += 1; }
   else { cart.push({key:itemKey, brand, qty:1, price, category:PRODUCTS[itemKey].category}); }
   recordPurchase(itemKey);
+  renderPairings(itemKey);
   renderCart();
 }
 
