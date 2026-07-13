@@ -307,6 +307,11 @@
         <div class="empty-stage">Recognized items will appear here as sticker cards.</div>
       </div>
 
+      <div class="picks" id="frequentPicksWrap" style="display:none;">
+        <h3>Based on your shopping</h3>
+        <div class="chip-row" id="frequentRow"></div>
+      </div>
+
       <div class="picks">
         <h3>Today's picks</h3>
         <div class="chip-row" id="picksRow"></div>
@@ -463,6 +468,36 @@ const RECIPES = {
 
 const NUM_WORDS = {one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,a:1,an:1,couple:2};
 
+// Hindi item names -> English catalog keys. Draft vocabulary — correct any
+// word choices that don't match local/regional usage.
+const HINDI_ITEMS = {
+  'सेब':'apple','केला':'banana','संतरा':'orange','आम':'mango','अंगूर':'grapes',
+  'तरबूज':'watermelon','पपीता':'papaya','अनार':'pomegranate','अमरूद':'guava',
+  'अनानास':'pineapple','कीवी':'kiwi','नाशपाती':'pear','स्ट्रॉबेरी':'strawberry',
+  'चीकू':'chikoo','खरबूजा':'muskmelon',
+  'आलू':'potato','प्याज':'onion','टमाटर':'tomato','पालक':'spinach',
+  'फूलगोभी':'cauliflower','पत्तागोभी':'cabbage','शिमला मिर्च':'capsicum',
+  'गाजर':'carrot','खीरा':'cucumber','बैंगन':'brinjal','मटर':'peas',
+  'चुकंदर':'beetroot','मूली':'radish','भिंडी':'ladyfinger','लौकी':'bottle gourd',
+  'करेला':'bitter gourd','कद्दू':'pumpkin','लहसुन':'garlic','अदरक':'ginger','धनिया':'coriander',
+  'दूध':'milk','दही':'curd','पनीर':'paneer','मक्खन':'butter','घी':'ghee',
+  'मलाई':'cream','छाछ':'buttermilk',
+  'रसगुल्ला':'rasgulla','गुलाब जामुन':'gulab jamun','बर्फी':'barfi',
+  'काजू कतली':'kaju katli','जलेबी':'jalebi','लड्डू':'ladoo','पेड़ा':'peda',
+  'हलवा':'halwa','रसमलाई':'rasmalai','सोन पापड़ी':'soan papdi',
+  'चिप्स':'potato chips','नाचोस':'nachos','पॉपकॉर्न':'popcorn','कुरकुरे':'kurkure',
+  'भुजिया':'bhujia','नमकीन':'namkeen mixture','बिस्कुट':'biscuits','कुकीज़':'cookies',
+  'ब्रेड':'bread','डबल रोटी':'bread','चावल':'rice','चीनी':'sugar','नमक':'salt',
+  'चाय':'tea','कॉफी':'coffee','चॉकलेट':'chocolate','आटा':'wheat atta',
+  'तेल':'cooking oil','पोहा':'poha','केसर':'kesar'
+};
+
+// Hindi action + quantity words layered on top of the English ones
+const HINDI_ADD_WORDS = ['जोड़ो','जोड़ें','चाहिए','डालो','लाओ','खरीदना है'];
+const HINDI_REMOVE_WORDS = ['हटाओ','हटा दो','निकालो','निकाल दो'];
+const HINDI_SEARCH_WORDS = ['ढूंढो','खोजो','दिखाओ'];
+const HINDI_NUM_WORDS = {'एक':1,'दो':2,'तीन':3,'चार':4,'पांच':5,'छह':6,'सात':7,'आठ':8,'नौ':9,'दस':10};
+
 // Longest-key-first so multi-word items ("potato chips") match before single words ("potato")
 const PRODUCT_KEYS_BY_LENGTH = Object.keys(PRODUCTS).sort((a,b)=>b.length-a.length);
 
@@ -496,6 +531,9 @@ function singular(word){
 }
 
 function findProduct(text){
+  for(const hindiWord of Object.keys(HINDI_ITEMS)){
+    if(text.includes(hindiWord)) return HINDI_ITEMS[hindiWord];
+  }
   for(const key of PRODUCT_KEYS_BY_LENGTH){
     if(text.includes(key)) return key;
   }
@@ -514,16 +552,23 @@ function parseCommand(raw){
   if(priceMatch) priceUnder = parseFloat(priceMatch[1]);
 
   let action = 'add';
-  if(/\b(remove|delete|take off)\b/.test(text)) action = 'remove';
-  else if(/\b(find|search|look for|show me)\b/.test(text)) action = 'search';
+  if(/\b(remove|delete|take off)\b/.test(text) || HINDI_REMOVE_WORDS.some(w=>text.includes(w))) action = 'remove';
+  else if(/\b(find|search|look for|show me)\b/.test(text) || HINDI_SEARCH_WORDS.some(w=>text.includes(w))) action = 'search';
+  else if(HINDI_ADD_WORDS.some(w=>text.includes(w))) action = 'add';
 
   let quantity = 1;
   const numMatch = text.match(/\b(\d+)\b/);
   if(numMatch){
     quantity = parseInt(numMatch[1],10);
   } else {
+    let foundNum = false;
     for(const word in NUM_WORDS){
-      if(new RegExp(`\\b${word}\\b`).test(text)){ quantity = NUM_WORDS[word]; break; }
+      if(new RegExp(`\\b${word}\\b`).test(text)){ quantity = NUM_WORDS[word]; foundNum = true; break; }
+    }
+    if(!foundNum){
+      for(const word in HINDI_NUM_WORDS){
+        if(text.includes(word)){ quantity = HINDI_NUM_WORDS[word]; break; }
+      }
     }
   }
 
@@ -599,6 +644,8 @@ function confirmAdd(itemKey){
   if(existing){ existing.qty += qty; }
   else { cart.push({key:itemKey, brand:b.brand, qty, price:b.price, category:PRODUCTS[itemKey].category}); }
 
+  recordPurchase(itemKey);
+
   const sticker = document.getElementById('activeSticker');
   sticker.classList.add('leaving');
   showToast(`Added ${qty} × ${b.brand} ${itemKey} to your list`);
@@ -606,6 +653,33 @@ function confirmAdd(itemKey){
     stageEl.innerHTML = '<div class="empty-stage">Recognized items will appear here as sticker cards.</div>';
   }, 380);
   renderCart();
+}
+
+// ---- Purchase-history-based suggestions ("running low on X") ----
+// In-memory only for this demo; a real build would persist this per-user
+// (e.g. Firestore) so it survives across sessions.
+let purchaseHistory = {};
+
+function recordPurchase(itemKey){
+  purchaseHistory[itemKey] = (purchaseHistory[itemKey] || 0) + 1;
+  renderFrequentPicks();
+}
+
+function renderFrequentPicks(){
+  const rowEl = document.getElementById('frequentRow');
+  if(!rowEl) return;
+  const inCartKeys = new Set(cart.map(c=>c.key));
+  const suggestions = Object.entries(purchaseHistory)
+    .filter(([key,count]) => count >= 2 && !inCartKeys.has(key))
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,3);
+
+  const wrapEl = document.getElementById('frequentPicksWrap');
+  if(suggestions.length===0){ wrapEl.style.display='none'; return; }
+  wrapEl.style.display='block';
+  rowEl.innerHTML = suggestions.map(([key]) =>
+    `<div class="chip" onclick="quickAddText('${key}')">${PRODUCTS[key].icon} Running low on ${key}?</div>`
+  ).join('');
 }
 
 function removeFromCart(key, brand){
@@ -813,6 +887,7 @@ function addIngredientToCart(itemKey, brand, price){
   const existing = cart.find(c=>c.key===itemKey && c.brand===brand);
   if(existing){ existing.qty += 1; }
   else { cart.push({key:itemKey, brand, qty:1, price, category:PRODUCTS[itemKey].category}); }
+  recordPurchase(itemKey);
   renderCart();
 }
 
